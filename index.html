@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GitHub 연동 실습</title>
+<meta name="description" content="모바일 Claude Code와 GitHub 연동 실습 기록">
+<style>
+  :root {
+    --bg: #f7f7f5; --card: #ffffff; --text: #1d1d1b; --muted: #6b6b66;
+    --line: #e4e4df; --accent: #2f6fed; --done: #1f9d55;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141413; --card: #1f1f1d; --text: #ececea; --muted: #a3a39d;
+      --line: #33332f; --accent: #6b9bff; --done: #4cc38a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    line-height: 1.6;
+  }
+  main { max-width: 640px; margin: 0 auto; padding: 32px 16px 48px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 24px; }
+  .progress { background: var(--line); border-radius: 999px; height: 10px; overflow: hidden; }
+  .bar { background: var(--done); height: 100%; width: 0; transition: width .3s; }
+  .count { color: var(--muted); font-size: .9rem; margin: 6px 0 20px; }
+  ol { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  li label {
+    display: flex; gap: 12px; align-items: flex-start; cursor: pointer;
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px;
+  }
+  li input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--done); flex: none; }
+  li b { display: block; }
+  li span { color: var(--muted); font-size: .9rem; }
+  li input:checked + div b { text-decoration: line-through; color: var(--muted); }
+  footer { margin-top: 28px; color: var(--muted); font-size: .85rem; }
+  button {
+    margin-top: 16px; background: none; border: 1px solid var(--line); color: var(--muted);
+    border-radius: 8px; padding: 8px 12px; font: inherit; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>GitHub 연동 실습 체크리스트</h1>
+  <p class="sub">모바일 Claude Code로 저장소를 다루는 과정을 단계별로 확인합니다.</p>
+
+  <div class="progress"><div class="bar" id="bar"></div></div>
+  <p class="count" id="count"></p>
+
+  <ol id="steps"></ol>
+  <button id="reset" type="button">체크 초기화</button>
+
+  <footer>체크 상태는 이 브라우저에만 저장됩니다. 마지막 업데이트: 2026-11-26</footer>
+</main>
+<script>
+  const steps = [
+    ["저장소 복제", "클라우드 컨테이너에 저장소가 내려받아짐"],
+    ["첫 커밋", "README.md 작성 후 커밋"],
+    ["권한 설정", "Claude GitHub App에 저장소 쓰기 권한 부여"],
+    ["푸시", "작업 브랜치를 GitHub에 올림"],
+    ["main 브랜치 생성", "PR의 합칠 대상 만들기"],
+    ["PR 생성과 Merge", "앱에서 Merge 버튼으로 main에 반영"],
+    ["기본 브랜치 변경", "저장소 기본 브랜치를 main으로 지정"],
+    ["GitHub Pages 공개", "이 페이지가 인터넷 주소로 열림"]
+  ];
+  const KEY = "gh-practice-checks";
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
+  // 첫 방문 시: 이미 완료한 7단계를 체크된 상태로 시작
+  if (!Object.keys(saved).length) steps.slice(0, 7).forEach((_, i) => saved[i] = true);
+
+  const list = document.getElementById("steps");
+  steps.forEach(([title, desc], i) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<label><input type="checkbox" data-i="${i}"><div><b>${i + 1}. ${title}</b><span>${desc}</span></div></label>`;
+    li.querySelector("input").checked = !!saved[i];
+    list.appendChild(li);
+  });
+
+  function render() {
+    const done = steps.filter((_, i) => saved[i]).length;
+    document.getElementById("bar").style.width = (done / steps.length * 100) + "%";
+    document.getElementById("count").textContent = `${steps.length}단계 중 ${done}단계 완료`;
+    try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+  }
+  list.addEventListener("change", e => { saved[e.target.dataset.i] = e.target.checked; render(); });
+  document.getElementById("reset").addEventListener("click", () => {
+    saved = {}; list.querySelectorAll("input").forEach(c => c.checked = false); render();
+  });
+  render();
+</script>
+</body>
+</html>
