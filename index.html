@@ -37,6 +37,7 @@
   li b { display: block; }
   li span { color: var(--muted); font-size: .9rem; }
   li input:checked + div b { text-decoration: line-through; color: var(--muted); }
+  h2 { font-size: 1.25rem; margin: 36px 0 4px; }
   footer { margin-top: 28px; color: var(--muted); font-size: .85rem; }
   button {
     margin-top: 16px; background: none; border: 1px solid var(--line); color: var(--muted);
@@ -53,6 +54,11 @@
   <p class="count" id="count"></p>
 
   <ol id="steps"></ol>
+
+  <h2>다음 목표</h2>
+  <p class="sub">ROADMAP.md의 다음 단계입니다.</p>
+  <ol id="goals"></ol>
+
   <button id="reset" type="button">체크 초기화</button>
 
   <footer>체크 상태는 이 브라우저에만 저장됩니다. 마지막 업데이트: 2026-11-26</footer>
@@ -68,19 +74,30 @@
     ["기본 브랜치 변경", "저장소 기본 브랜치를 main으로 지정"],
     ["GitHub Pages 공개", "이 페이지가 인터넷 주소로 열림"]
   ];
+  const goals = [
+    ["이슈 기반 작업", "이슈 등록 → PR → Merge 시 이슈 자동 종료"],
+    ["코드 리뷰와 충돌", "PR 리뷰 받기, 일부러 충돌 만들어 해결하기"],
+    ["자동 검사 (GitHub Actions)", "PR마다 HTML과 링크를 자동으로 검사"],
+    ["실제 프로젝트", "매일 쓰는 개인 웹 도구 하나 만들기"]
+  ];
   const KEY = "gh-practice-checks";
   let saved = {};
   try { saved = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
   // 첫 방문 시: 이미 완료한 7단계를 체크된 상태로 시작
   if (!Object.keys(saved).length) steps.slice(0, 7).forEach((_, i) => saved[i] = true);
 
-  const list = document.getElementById("steps");
-  steps.forEach(([title, desc], i) => {
-    const li = document.createElement("li");
-    li.innerHTML = `<label><input type="checkbox" data-i="${i}"><div><b>${i + 1}. ${title}</b><span>${desc}</span></div></label>`;
-    li.querySelector("input").checked = !!saved[i];
-    list.appendChild(li);
-  });
+  // 기존 체크 기록과 겹치지 않도록 다음 목표는 "g0", "g1"… 키를 사용
+  function build(listId, items, prefix) {
+    const list = document.getElementById(listId);
+    items.forEach(([title, desc], i) => {
+      const id = prefix + i;
+      const li = document.createElement("li");
+      li.innerHTML = `<label><input type="checkbox" data-id="${id}"><div><b>${i + 1}. ${title}</b><span>${desc}</span></div></label>`;
+      li.querySelector("input").checked = !!saved[id];
+      list.appendChild(li);
+    });
+    list.addEventListener("change", e => { saved[e.target.dataset.id] = e.target.checked; render(); });
+  }
 
   function render() {
     const done = steps.filter((_, i) => saved[i]).length;
@@ -88,9 +105,11 @@
     document.getElementById("count").textContent = `${steps.length}단계 중 ${done}단계 완료`;
     try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
   }
-  list.addEventListener("change", e => { saved[e.target.dataset.i] = e.target.checked; render(); });
+
+  build("steps", steps, "");
+  build("goals", goals, "g");
   document.getElementById("reset").addEventListener("click", () => {
-    saved = {}; list.querySelectorAll("input").forEach(c => c.checked = false); render();
+    saved = {}; document.querySelectorAll("li input").forEach(c => c.checked = false); render();
   });
   render();
 </script>
