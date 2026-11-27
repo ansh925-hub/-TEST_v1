@@ -1,81 +1,81 @@
 {
-  "generatedAt": "2026-11-27T08:32:04.394Z",
-  "date": "2026-11-27",
+  "generatedAt": "2026-11-27T22:52:20.264Z",
+  "date": "2026-11-28",
   "sources": {
     "weather": {
       "ok": true,
-      "updatedAt": "2026-11-27T08:32:04.394Z",
+      "updatedAt": "2026-11-27T22:52:20.264Z",
       "data": {
         "city": "서울",
-        "temperature": 12.3,
-        "condition": "대체로 맑음",
-        "max": 15.1,
-        "min": 6.1,
-        "precipitationChance": 77
+        "temperature": 3.6,
+        "condition": "맑음",
+        "max": 8.4,
+        "min": 1,
+        "precipitationChance": 0
       }
     },
     "air": {
       "ok": true,
-      "updatedAt": "2026-11-27T08:32:04.394Z",
+      "updatedAt": "2026-11-27T22:52:20.264Z",
       "data": {
         "city": "서울",
-        "pm10": 54.6,
+        "pm10": 39.6,
         "pm10Grade": "보통",
-        "pm25": 44.7,
-        "pm25Grade": "나쁨"
+        "pm25": 31.3,
+        "pm25Grade": "보통"
       }
     },
     "fx": {
       "ok": true,
-      "updatedAt": "2026-11-27T08:32:04.394Z",
+      "updatedAt": "2026-11-27T22:52:20.264Z",
       "data": {
-        "baseDate": "2026-11-26",
+        "baseDate": "2026-11-27",
         "rates": {
           "USD": {
             "unit": 1,
-            "krw": 1344.65
+            "krw": 1334.9
           },
           "JPY": {
             "unit": 100,
-            "krw": 844.31
+            "krw": 836.72
           },
           "EUR": {
             "unit": 1,
-            "krw": 1475.76
+            "krw": 1462.65
           },
           "CNY": {
             "unit": 1,
-            "krw": 201.89
+            "krw": 200.6
           }
         }
       }
     },
     "indicesUS": {
       "ok": true,
-      "updatedAt": "2026-11-27T08:32:04.394Z",
+      "updatedAt": "2026-11-27T22:52:20.264Z",
       "data": {
         "items": [
           {
             "code": "SPX",
             "name": "S&P 500",
-            "price": 7182.78,
-            "previousClose": 7201.09,
-            "change": -18.31,
-            "changePct": -0.25,
-            "date": "2026-11-25",
-            "asOf": "2026-11-25T21:32:06.000Z",
+            "price": 7297.49,
+            "previousClose": 7182.78,
+            "change": 114.71,
+            "changePct": 1.6,
+            "date": "2026-11-27",
+            "asOf": "2026-11-27T18:38:39.000Z",
             "closed": true,
             "via": "Yahoo Finance"
           },
           {
             "code": "NDX",
             "name": "나스닥 100",
-            "price": 26046.9,
-            "previousClose": 26214.17,
-            "change": -167.27,
-            "changePct": -0.64,
-            "date": "2026-11-25",
-            "asOf": "2026-11-25T22:15:59.000Z",
+            "price": 26726.39,
+            "previousClose": 26046.9,
+            "change": 679.49,
+            "changePct": 2.61,
+            "date": "2026-11-27",
+            "asOf": "2026-11-27T19:15:59.000Z",
             "closed": true,
             "via": "Yahoo Finance"
           }
@@ -84,30 +84,30 @@
     },
     "indicesKR": {
       "ok": true,
-      "updatedAt": "2026-11-27T08:32:04.394Z",
+      "updatedAt": "2026-11-27T22:52:20.264Z",
       "data": {
         "items": [
           {
             "code": "KOSPI",
             "name": "코스피",
-            "price": 4915.68,
-            "previousClose": 4711.21,
-            "change": 204.47,
-            "changePct": 4.34,
-            "date": "2026-11-27",
-            "asOf": "2026-11-27T06:30:40.000Z",
+            "price": 4711.21,
+            "previousClose": 4697.51,
+            "change": 13.7,
+            "changePct": 0.29,
+            "date": "2026-11-26",
+            "asOf": "2026-11-27T11:05:40.000Z",
             "closed": true,
             "via": "Yahoo Finance"
           },
           {
             "code": "KOSDAQ",
             "name": "코스닥",
-            "price": 708.99,
-            "previousClose": 655.71,
-            "change": 53.28,
-            "changePct": 8.13,
-            "date": "2026-11-27",
-            "asOf": "2026-11-27T06:32:50.000Z",
+            "price": 655.71,
+            "previousClose": 650.64,
+            "change": 5.07,
+            "changePct": 0.78,
+            "date": "2026-11-26",
+            "asOf": "2026-11-27T11:05:40.000Z",
             "closed": true,
             "via": "Yahoo Finance"
           }
@@ -116,52 +116,52 @@
     },
     "newsDomestic": {
       "ok": true,
-      "updatedAt": "2026-11-27T08:32:04.394Z",
+      "updatedAt": "2026-11-27T22:52:20.264Z",
       "data": {
         "items": [
           {
-            "title": "이용철 법무장관 후보자 청문보고서 채택…국힘 퇴장",
-            "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBacWlYZjJERDgtTGR0TURfTm1DbWYtZlUtUjV0c2h0YWdXUlZqUDRPN2RvY1NEZDlfQnlJOVpBOHY0LVQ0OGd5R2JkMkprRDMxQVJ3Y1hRaUdZOGl2RkRzSkRPUFVqSnJSSUZkOEdkdVlqaGc3?oc=5",
-            "source": "한겨레",
-            "publishedAt": "2026-11-27T08:09:00.000Z"
+            "title": "DART 소행성 궤도 변경 실험의 충돌 흔적을 담은 첫 이미지",
+            "link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOdElxeElEeDRVcm8xVndvZi1OTUtxeEhpMnJNTzlMMi1rTEtLVzhXOEF0aUhTUFI5WVFtY1ZlZ20zNW16VEo0MlRGNHRVQllEYlJncVVHRzNMOU92Y3Z0SDJhTmpZOHRrcG5TSjBURVNuTTFVWXZjcHhwSnA0NkFQeERkU0JqS2tFaU56d1o4eEo3UQ?oc=5",
+            "source": "GeekNews",
+            "publishedAt": "2026-11-27T21:37:47.000Z"
           },
           {
-            "title": "생후 1살·초등 입학 때 스마트폰…9살 성적·기억력 갉아먹었다",
-            "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE52c1FhdXpHSURKcGFXTkZBYWh6eWFuMFA4U3B2dDJuSGt6Mzl4MnBuUEJkTF9uT1paZUJVN3J6LWE5U1ZPdDA0S09GYnhMTXlwaUd5cXVYd0dNUHhBTXo1QjVR?oc=5",
-            "source": "매일신문",
-            "publishedAt": "2026-11-27T08:07:53.000Z"
+            "title": "“젠슨 황 불륜 상대와 연계된 중국 데이터센터에 엔비디아 블랙웰 설치”",
+            "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5qU04wUGZ6S1N6TC1samtwbHgtSzB4Rm9TaW9zTFFvN2N0N21meVA0U3RqaHhRTjN3RzBHa3FEUzg5a1VWM0N2cXh0ZTV3TTdnZzVFc3RMdUZLUXM?oc=5",
+            "source": "KBS 뉴스",
+            "publishedAt": "2026-11-27T21:03:00.000Z"
           },
           {
-            "title": "'포스팅 D-5' 노시환 기적의 ML행 성사되나! 美 강정호 전 소속팀에 강력 추천 \"우타 거포 ROH, 피츠버그와 잘 어울려\"",
-            "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOVlcyVmQwSGFPOVdYX1VJeU5pTndyWE9mVU16eFdLcWhwODhfMjJwQ2lXZElSTzlrSldZODVhREI1S203anNlOWZhelpDODZpNE9ma0pHSUpkaE50WEs2Y1JUU3hQdHRicG14VDZ0S3ltLVZGdlA4bzQxbVpUVEl0ZXpxV3J3VkpBczNJ?oc=5",
-            "source": "조선일보",
-            "publishedAt": "2026-11-27T08:04:00.000Z"
+            "title": "'명가 부활' 꿈꾸는 삼성화재, 1114일 만에 선두…V리그 판도 흔든다",
+            "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE4yNUlQZEh1TEw4clNBbUo2TU9FTFFpY1o1N2tQMkI2T042TEJ4OHFBdmJWZ29wb0o0dHdiUFZYaEp2SDhydjVqeHB6QmR5LThCcUJab1ppLXU4UQ?oc=5",
+            "source": "뉴스1",
+            "publishedAt": "2026-11-27T20:40:00.000Z"
           }
         ]
       }
     },
     "newsWorld": {
       "ok": true,
-      "updatedAt": "2026-11-27T08:32:04.394Z",
+      "updatedAt": "2026-11-27T22:52:20.264Z",
       "data": {
         "items": [
           {
-            "title": "Could housing decide Spain's general election?",
-            "link": "https://www.bbc.co.uk/news/videos/cm9w9y8947xqo?at_medium=RSS&at_campaign=rss",
+            "title": "Prosecutors seek 25-year prison term for 'poison seller' Kenneth Law",
+            "link": "https://www.bbc.co.uk/news/articles/cmx2898wq2qjo?at_medium=RSS&at_campaign=rss",
             "source": "BBC News",
-            "publishedAt": "2026-11-27T06:09:31.000Z"
+            "publishedAt": "2026-11-27T22:03:46.000Z"
           },
           {
-            "title": "Houthi attacks test Saudi Arabia's image of security",
-            "link": "https://www.bbc.co.uk/news/articles/c6ly7jgv7jzdo?at_medium=RSS&at_campaign=rss",
+            "title": "Spanish PM and rivals rally supporters in final pitch for votes",
+            "link": "https://www.bbc.co.uk/news/articles/c8wy5p4gdnwvo?at_medium=RSS&at_campaign=rss",
             "source": "BBC News",
-            "publishedAt": "2026-11-27T06:04:51.000Z"
+            "publishedAt": "2026-11-27T21:55:53.000Z"
           },
           {
-            "title": "Major Thanksgiving storm brings flooding, flight delays across US",
-            "link": "https://www.bbc.co.uk/news/articles/ckm2mz3prq77o?at_medium=RSS&at_campaign=rss",
+            "title": "Capsized tanker carrying 7,000 tonnes of diesel to be towed away from Ibiza",
+            "link": "https://www.bbc.co.uk/news/articles/cvrlgz6g0ekgo?at_medium=RSS&at_campaign=rss",
             "source": "BBC News",
-            "publishedAt": "2026-11-27T05:15:26.000Z"
+            "publishedAt": "2026-11-27T20:34:45.000Z"
           }
         ]
       }
