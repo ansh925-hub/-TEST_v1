@@ -11,6 +11,14 @@ Claude Code가 이 저장소에서 작업할 때 지키는 지침입니다. 진�
   - `ROADMAP.md`: 단계 0~4 학습 계획
   - `index.html`: 실습 체크리스트 페이지 (빌드 도구 없이 HTML 한 파일)
   - `README.md`: 저장소 소개와 기록
+  - `collect/`: 대시보드 데이터 수집기 (Node.js 20+, 외부 패키지 없음). 출처마다 `collect/sources/*.mjs` 하나, `collect/index.mjs`의 `SOURCES`에 등록
+  - `data/latest.json`, `data/history.json`: 수집 결과 (수집기가 만든다. 손으로 고치지 않는다)
+
+## 대시보드 프로젝트 (단계 4)
+- 데이터 출처는 **키 없이 쓸 수 있는 공개 API/RSS만** 쓴다. API 키가 필요해지면 코드에 넣지 말고 사용자와 GitHub Secrets 사용을 먼저 상의한다.
+- 출처 하나가 실패해도 나머지는 계속 수집하고, 실패한 출처는 직전 성공 값을 유지한다 (`mergeLatest`).
+- 뉴스는 **제목, 링크, 언론사, 시각만** 저장한다. 기사 본문은 저장하지 않는다 (저작권).
+- 새 출처를 추가할 때는 네트워크 없이 돌아가는 테스트를 `collect/*.test.mjs`에 함께 추가한다.
 
 ## 사용자와 소통
 - 한국어로, 쉬운 말로 설명한다. 사용자는 Git/GitHub를 배우는 중이다. 새 용어는 처음 나올 때 한 줄로 풀어 준다.
@@ -43,4 +51,6 @@ Claude Code가 이 저장소에서 작업할 때 지키는 지침입니다. 진�
   - **HTML 문법**: `htmlhint` (규칙은 `.htmlhintrc`)
   - **깨진 링크**: `lychee`가 모든 `.html`, `.md` 파일의 링크를 열어 본다
 - PR은 두 검사가 모두 ✅일 때만 Merge를 권한다. ❌이면 `gh run view --log-failed`로 원인을 확인하고 고친다.
-- 이 PC에는 Node.js가 없어서 로컬에서 검사를 미리 돌릴 수 없다. 결과는 PR의 Actions에서 확인한다.
+  - **단위 테스트**: `npm test` (Node 내장 테스트, 네트워크 없이 실행)
+- 로컬에서 미리 돌리기: `npm test`, 실제 수집은 `npm run collect` (data/ 파일이 바뀐다).
+- PC의 Node.js는 `C:\Users\eBEST\AppData\Local\Programs\nodejs`에 설치되어 있다. 명령을 못 찾으면 데스크톱 앱을 다시 켜거나 이 경로를 PATH 앞에 붙인다.

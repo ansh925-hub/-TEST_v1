@@ -1,0 +1,83 @@
+// 대시보드 데이터 수집기
+// 실행: npm run collect  →  data/latest.json (최신 값), data/history.json (날짜별 기록) 갱신
+//
+// 출처 하나가 실패해도 나머지는 계속 수집한다. 실패한 출처는 latest.json에 오류로 남기고,
+// 직전에 성공한 값을 그대로 보여 줄 수 있도록 lastSuccess를 유지한다.
+// 실패가 하나라도 있으면 종료 코드 1 → Actions에서 실패로 표시된다.
+import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import { todayKST } from "./lib.mjs";
+import * as weather from "./sources/weather.mjs";
+import * as air from "./sources/air.mjs";
+import * as fx from "./sources/fx.mjs";
+
+// 새 출처를 추가하려면 sources/에 파일을 만들고 여기에 한 줄 추가한다.
+// history: 날짜별 기록에 남길 값만 골라내는 함수 (차트용)
+export const SOURCES = {
+  weather: { mod: weather, history: d => ({ max: d.max, min: d.min }) },
+  air: { mod: air, history: d => ({ pm10: d.pm10, pm25: d.pm25 }) },
+  fx: { mod: fx, history: d => Object.fromEntries(Object.entries(d.rates).map(([c, r]) => [c, r.krw])) },
+};
+
+const DATA_DIR = new URL("../data/", import.meta.url);
+const LATEST = new URL("latest.json", DATA_DIR);
+const HISTORY = new URL("history.json", DATA_DIR);
+const HISTORY_DAYS = 400; // 약 1년 + 여유
+
+async function readJSON(url, fallback) {
+  try { return JSON.parse(await readFile(url, "utf8")); }
+  catch (e) { if (e.code === "ENOENT") return fallback; throw e; }
+}
+
+/** 출처들을 동시에 수집해서 {이름: {ok, data | error}} 형태로 돌려준다. */
+export async function collectAll(sources = SOURCES) {
+  const names = Object.keys(sources);
+  const results = await Promise.allSettled(names.map(n => sources[n].mod.collect()));
+  return Object.fromEntries(names.map((n, i) => {
+    const r = results[i];
+    return [n, r.status === "fulfilled" ? { ok: true, data: r.value } : { ok: false, error: String(r.reason?.message ?? r.reason) }];
+  }));
+}
+
+/** 이전 latest와 이번 결과를 합친다. 실패한 출처는 직전 성공 값을 유지한다. */
+export function mergeLatest(prev, results, now = new Date()) {
+  const sources = {};
+  for (const [name, r] of Object.entries(results)) {
+    const before = prev?.sources?.[name];
+    sources[name] = r.ok
+      ? { ok: true, updatedAt: now.toISOString(), data: r.data }
+      : { ok: false, error: r.error, failedAt: now.toISOString(),
+          // 직전 성공 값 (한 번도 성공한 적 없으면 null)
+          updatedAt: before?.updatedAt ?? null, data: before?.data ?? null };
+  }
+  return { generatedAt: now.toISOString(), date: todayKST(now), sources };
+}
+
+/** 오늘 날짜 기록을 넣거나 바꾸고, 오래된 기록은 잘라 낸다. 성공한 출처만 기록한다. */
+export function mergeHistory(history, results, now = new Date(), sources = SOURCES) {
+  const date = todayKST(now);
+  const entry = { ...(history.find(h => h.date === date) ?? {}), date };
+  for (const [name, r] of Object.entries(results)) {
+    if (r.ok) entry[name] = sources[name].history(r.data);
+  }
+  return [...history.filter(h => h.date !== date), entry]
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .slice(-HISTORY_DAYS);
+}
+
+async function main() {
+  const results = await collectAll();
+  const prevLatest = await readJSON(LATEST, null);
+  const prevHistory = await readJSON(HISTORY, []);
+  await mkdir(DATA_DIR, { recursive: true });
+  await writeFile(LATEST, JSON.stringify(mergeLatest(prevLatest, results), null, 2) + "\n");
+  await writeFile(HISTORY, JSON.stringify(mergeHistory(prevHistory, results), null, 2) + "\n");
+
+  for (const [name, r] of Object.entries(results)) {
+    console.log(r.ok ? `✅ ${name}` : `❌ ${name}: ${r.error}`);
+  }
+  if (Object.values(results).some(r => !r.ok)) process.exitCode = 1;
+}
+
+// 테스트에서 import할 때는 실행하지 않고, 직접 실행할 때만 수집한다.
+if (process.argv[1] === fileURLToPath(import.meta.url)) await main();
