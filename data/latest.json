@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-27T04:24:20.108Z",
+  "generatedAt": "2026-11-27T04:35:56.941Z",
   "date": "2026-11-27",
   "sources": {
     "weather": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:24:20.108Z",
+      "updatedAt": "2026-11-27T04:35:56.941Z",
       "data": {
         "city": "서울",
-        "temperature": 14.6,
-        "condition": "구름 조금",
+        "temperature": 14.8,
+        "condition": "대체로 맑음",
         "max": 15,
         "min": 6.1,
         "precipitationChance": 77
@@ -16,7 +16,7 @@
     },
     "air": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:24:20.108Z",
+      "updatedAt": "2026-11-27T04:35:56.941Z",
       "data": {
         "city": "서울",
         "pm10": 48.2,
@@ -27,7 +27,7 @@
     },
     "fx": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:24:20.108Z",
+      "updatedAt": "2026-11-27T04:35:56.941Z",
       "data": {
         "baseDate": "2026-11-26",
         "rates": {
@@ -50,9 +50,73 @@
         }
       }
     },
+    "indicesUS": {
+      "ok": true,
+      "updatedAt": "2026-11-27T04:35:56.941Z",
+      "data": {
+        "items": [
+          {
+            "code": "SPX",
+            "name": "S&P 500",
+            "price": 7182.78,
+            "previousClose": 7201.09,
+            "change": -18.31,
+            "changePct": -0.25,
+            "date": "2026-11-25",
+            "asOf": "2026-11-25T21:32:06.000Z",
+            "closed": true,
+            "via": "Yahoo Finance"
+          },
+          {
+            "code": "NDX",
+            "name": "나스닥 100",
+            "price": 26046.9,
+            "previousClose": 26214.17,
+            "change": -167.27,
+            "changePct": -0.64,
+            "date": "2026-11-25",
+            "asOf": "2026-11-25T22:15:59.000Z",
+            "closed": true,
+            "via": "Yahoo Finance"
+          }
+        ]
+      }
+    },
+    "indicesKR": {
+      "ok": true,
+      "updatedAt": "2026-11-27T04:35:56.941Z",
+      "data": {
+        "items": [
+          {
+            "code": "KOSPI",
+            "name": "코스피",
+            "price": 4898.42,
+            "previousClose": 4711.21,
+            "change": 187.21,
+            "changePct": 3.97,
+            "date": "2026-11-27",
+            "asOf": "2026-11-27T04:15:40.000Z",
+            "closed": false,
+            "via": "Yahoo Finance"
+          },
+          {
+            "code": "KOSDAQ",
+            "name": "코스닥",
+            "price": 699.32,
+            "previousClose": 655.71,
+            "change": 43.61,
+            "changePct": 6.65,
+            "date": "2026-11-27",
+            "asOf": "2026-11-27T04:15:50.000Z",
+            "closed": false,
+            "via": "Yahoo Finance"
+          }
+        ]
+      }
+    },
     "newsDomestic": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:24:20.108Z",
+      "updatedAt": "2026-11-27T04:35:56.941Z",
       "data": {
         "items": [
           {
@@ -78,7 +142,7 @@
     },
     "newsWorld": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:24:20.108Z",
+      "updatedAt": "2026-11-27T04:35:56.941Z",
       "data": {
         "items": [
           {
