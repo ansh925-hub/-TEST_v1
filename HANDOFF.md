@@ -38,8 +38,8 @@
 ### 대시보드 계획 (출처는 2026-11-27에 PC에서 실제 호출해 응답 확인)
 | PR | 내용 | 출처 | 상태 |
 |---|---|---|---|
-| ① | 수집기 기본 구조 + 날씨·미세먼지·환율, 단위 테스트를 CI에 추가 | Open-Meteo, Open-Meteo Air Quality, Frankfurter(ECB) | 진행 중 |
-| ② | 뉴스 국내 3개 / 해외 3개 (제목·링크만) | 연합뉴스 RSS, BBC World RSS | 미시작 |
+| ① | 수집기 기본 구조 + 날씨·미세먼지·환율, 단위 테스트를 CI에 추가 | Open-Meteo, Open-Meteo Air Quality, Frankfurter(ECB) | 완료 (PR #13) |
+| ② | 뉴스 국내 3개 / 해외 3개 (제목·링크·언론사·시각만, 날짜별 기록에는 안 쌓음) | Google 뉴스 한국 RSS, BBC World RSS (연합뉴스는 피드에 재배포 금지 명시라 제외) | 진행 중 |
 | ③ | 주가지수 S&P500·나스닥100·코스피·코스닥 | Yahoo Finance 차트(비공식, 막힐 수 있음) / 미국 지수는 FRED로 대체 가능 | 미시작 |
 | ④ | 예약 Actions: 매일 자동 수집 → 바뀐 데이터만 커밋 | GitHub Actions `schedule` | 미시작 |
 | ⑤ | `dashboard/` 페이지: 카드 + 최근 30일 차트 | `data/*.json` | 미시작 |

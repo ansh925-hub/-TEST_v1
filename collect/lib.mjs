@@ -12,6 +12,16 @@ export async function getJSON(url) {
   return res.json();
 }
 
+/** URL에서 글자(RSS 등)를 받아 온다. */
+export async function getText(url) {
+  const res = await fetch(url, {
+    headers: { "User-Agent": UA, Accept: "application/rss+xml, application/xml, text/xml" },
+    signal: AbortSignal.timeout(20_000),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}: ${url}`);
+  return res.text();
+}
+
 /** 한국 시간 기준 오늘 날짜 (예: "2026-11-27") */
 export function todayKST(now = new Date()) {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Seoul" }).format(now);

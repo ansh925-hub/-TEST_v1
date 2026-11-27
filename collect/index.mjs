@@ -10,11 +10,13 @@ import { todayKST } from "./lib.mjs";
 import * as weather from "./sources/weather.mjs";
 import * as air from "./sources/air.mjs";
 import * as fx from "./sources/fx.mjs";
+import * as news from "./sources/news.mjs";
 
 // 새 출처를 추가하려면 sources/에 파일을 만들고 여기에 한 줄 추가한다.
 // history: 날짜별 기록에 남길 값만 골라내는 함수 (차트용)
 // date: (선택) 기록할 날짜. 없으면 수집한 날(한국 시간). 환율처럼 "기준일"이 따로 있으면 그 날짜에 기록해서
 //       주말·휴일에 같은 값이 새 날짜로 반복 저장되지 않게 한다.
+// history가 없는 출처(뉴스)는 latest.json에만 남고 날짜별 기록에는 쌓지 않는다.
 export const SOURCES = {
   weather: { mod: weather, history: d => ({ max: d.max, min: d.min }) },
   air: { mod: air, history: d => ({ pm10: d.pm10, pm25: d.pm25 }) },
@@ -23,6 +25,8 @@ export const SOURCES = {
     date: d => d.baseDate,
     history: d => Object.fromEntries(Object.entries(d.rates).map(([c, r]) => [c, r.krw])),
   },
+  newsDomestic: { mod: news.domestic },
+  newsWorld: { mod: news.world },
 };
 
 const DATA_DIR = new URL("../data/", import.meta.url);
@@ -72,7 +76,7 @@ export function mergeLatest(prev, results, now = new Date()) {
 export function mergeHistory(history, results, now = new Date(), sources = SOURCES) {
   const byDate = new Map(history.map(h => [h.date, { ...h }]));
   for (const [name, r] of Object.entries(results)) {
-    if (!r.ok) continue;
+    if (!r.ok || !sources[name].history) continue;
     const date = sources[name].date?.(r.data) ?? todayKST(now);
     const entry = byDate.get(date) ?? { date };
     entry[name] = sources[name].history(r.data);

@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-27T04:14:31.406Z",
+  "generatedAt": "2026-11-27T04:24:20.108Z",
   "date": "2026-11-27",
   "sources": {
     "weather": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:14:31.406Z",
+      "updatedAt": "2026-11-27T04:24:20.108Z",
       "data": {
         "city": "서울",
-        "temperature": 14.4,
+        "temperature": 14.6,
         "condition": "구름 조금",
         "max": 15,
         "min": 6.1,
@@ -16,7 +16,7 @@
     },
     "air": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:14:31.406Z",
+      "updatedAt": "2026-11-27T04:24:20.108Z",
       "data": {
         "city": "서울",
         "pm10": 48.2,
@@ -27,7 +27,7 @@
     },
     "fx": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:14:31.406Z",
+      "updatedAt": "2026-11-27T04:24:20.108Z",
       "data": {
         "baseDate": "2026-11-26",
         "rates": {
@@ -48,6 +48,58 @@
             "krw": 201.89
           }
         }
+      }
+    },
+    "newsDomestic": {
+      "ok": true,
+      "updatedAt": "2026-11-27T04:24:20.108Z",
+      "data": {
+        "items": [
+          {
+            "title": "코스닥 장중 5% 급등‥'매수 사이드카' 발동",
+            "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE05VlE3MzJxZ0JTdUUtbW5ITXFzdERHc3NkQy1DR0pQSENGUGhGNU80cXlrSWZaVm5MZzdiaVk0Rk9tZ3V3bzZNMXk3dVlmZ2MxUFJzUU5ZVGQ2Tmp5MVRZZmU0RHVqdHRsNmpsclpSdTk4ajVQ0gF0QVVfeXFMUFh2bk13Q0FDU3FRdndkY2wxS2xaamZtanBzWF91alA4QWxybmV5cUEzSlQ0RkZ1aGRqWmg2UzBSSTJRQzdZb2ZLSl92cVIwTUhtWDF1WGRUNmlNeHlBTmtJaUpsVThPY0ZCS3ExczJ5MDNPZ1c?oc=5",
+            "source": "MBC 뉴스",
+            "publishedAt": "2026-11-27T02:33:20.000Z"
+          },
+          {
+            "title": "최민희, 징계심의 전 김민석 조준 \"마타도어 방지책 마련해야\"",
+            "link": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5yaVFabms2bGcwX3RVZ2kyMktocUIwVlUyLU15cnhKOWJYMUw4czJEa3REMlhObmNPTWxUUXJrRzAyOUdvNG5WUER0by1XOVRDbmxmMUpzcGlJTXNkSXdiT3A4TWJHS2RzdV9UQ0Rzbnd3R2pHeDczYdIBeEFVX3lxTE5XNGJ2U2JtNEFRZU5DVmhnd1dVNkt1UU82aWx5ZzEyTjN4cWhabFlLWG9qZmwybGNZQjY2RHJURktlX2dySGMxSTI0aHdndXk3VFNYNXFGR0NMR1ViZ2pITEx5RTJoLWI4TzBZUlluWGM1TXFzRHlPZw?oc=5",
+            "source": "MBC 뉴스",
+            "publishedAt": "2026-11-27T02:29:23.000Z"
+          },
+          {
+            "title": "뇌 MRI서 밝게 보이는 백질 병변, 넓을수록 기억력 점수 낮았다",
+            "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE0xWUIxOEhFREVMV2ctYk5STkxZM0tNLTl5eTJzV1d1STRDTzFLOU9JdW1CQ09qOXlaa0d6amt5Mlh3OHRHOTVPNlNPaVZERzhCTk5Pb3lCaGhXWHlsZXFGR3pwWkcwX2liVFRUWlln?oc=5",
+            "source": "간호사신문",
+            "publishedAt": "2026-11-27T02:25:08.000Z"
+          }
+        ]
+      }
+    },
+    "newsWorld": {
+      "ok": true,
+      "updatedAt": "2026-11-27T04:24:20.108Z",
+      "data": {
+        "items": [
+          {
+            "title": "New Zealand's ruling coalition falls short of parliamentary majority by one seat",
+            "link": "https://www.bbc.co.uk/news/articles/c670278qk879o?at_medium=RSS&at_campaign=rss",
+            "source": "BBC News",
+            "publishedAt": "2026-11-27T03:28:15.000Z"
+          },
+          {
+            "title": "Major Thanksgiving storm brings flooding, flight delays across US",
+            "link": "https://www.bbc.co.uk/news/articles/ckm2mz3prq77o?at_medium=RSS&at_campaign=rss",
+            "source": "BBC News",
+            "publishedAt": "2026-11-27T00:52:11.000Z"
+          },
+          {
+            "title": "Met Police ruined my life, says Kenyan man wrongly sentenced over attack on UK couple",
+            "link": "https://www.bbc.co.uk/news/articles/cqvg2nlr8kd8o?at_medium=RSS&at_campaign=rss",
+            "source": "BBC News",
+            "publishedAt": "2026-11-27T00:48:11.000Z"
+          }
+        ]
       }
     }
   }
