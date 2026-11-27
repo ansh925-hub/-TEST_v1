@@ -57,10 +57,22 @@ async function readJSON(url, fallback) {
   }
 }
 
+/**
+ * 실패 알림을 시험하려고 일부 출처를 일부러 실패시킨다.
+ * 환경 변수 COLLECT_FORCE_FAIL="weather,fx" 처럼 출처 이름을 쉼표로 적는다. 평소에는 비어 있다.
+ */
+export function forcedFailures(value = process.env.COLLECT_FORCE_FAIL ?? "") {
+  return new Set(value.split(",").map(s => s.trim()).filter(Boolean));
+}
+
 /** 출처들을 동시에 수집해서 {이름: {ok, data | error}} 형태로 돌려준다. */
-export async function collectAll(sources = SOURCES) {
+export async function collectAll(sources = SOURCES, forceFail = forcedFailures()) {
   const names = Object.keys(sources);
-  const results = await Promise.allSettled(names.map(n => sources[n].mod.collect()));
+  // 오타로 아무것도 실패하지 않은 채 "시험 성공"처럼 보이지 않도록, 모르는 이름은 바로 오류
+  const unknown = [...forceFail].filter(n => !names.includes(n));
+  if (unknown.length) throw new Error(`COLLECT_FORCE_FAIL에 모르는 출처: ${unknown.join(", ")} (가능: ${names.join(", ")})`);
+  const results = await Promise.allSettled(names.map(n =>
+    forceFail.has(n) ? Promise.reject(new Error("시험용 강제 실패 (COLLECT_FORCE_FAIL)")) : sources[n].mod.collect()));
   return Object.fromEntries(names.map((n, i) => {
     const r = results[i];
     return [n, r.status === "fulfilled" ? { ok: true, data: r.value } : { ok: false, error: String(r.reason?.message ?? r.reason) }];
