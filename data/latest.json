@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-27T04:14:31.406Z",
+  "generatedAt": "2026-11-27T04:22:41.955Z",
   "date": "2026-11-27",
   "sources": {
     "weather": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:14:31.406Z",
+      "updatedAt": "2026-11-27T04:22:41.955Z",
       "data": {
         "city": "서울",
-        "temperature": 14.4,
+        "temperature": 14.6,
         "condition": "구름 조금",
         "max": 15,
         "min": 6.1,
@@ -16,7 +16,7 @@
     },
     "air": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:14:31.406Z",
+      "updatedAt": "2026-11-27T04:22:41.955Z",
       "data": {
         "city": "서울",
         "pm10": 48.2,
@@ -27,7 +27,7 @@
     },
     "fx": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:14:31.406Z",
+      "updatedAt": "2026-11-27T04:22:41.955Z",
       "data": {
         "baseDate": "2026-11-26",
         "rates": {
@@ -48,6 +48,58 @@
             "krw": 201.89
           }
         }
+      }
+    },
+    "newsDomestic": {
+      "ok": true,
+      "updatedAt": "2026-11-27T04:22:41.955Z",
+      "data": {
+        "items": [
+          {
+            "title": "경찰, ‘한동훈 자료 유출 의혹’ 법무부·공소청 등 압수수색",
+            "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5kVTFoaGlkOFIwRlg5MjhuR2FoREhfU2x1M1EzbU9Ec2xwYmV0R0ZHQU5JRzlDYkphUVJZU1BnaUpqZkc3d05YZ2l1anMyaGpuZXNQNmh1LWtqRUExTElPOFhERVF1VE43Y001VlhMSFU3QQ?oc=5",
+            "source": "한겨레",
+            "publishedAt": "2026-11-27T02:24:00.000Z"
+          },
+          {
+            "title": "[속보] 윤석열 정부 ‘관저 이전 예산 전용’ 김대기 1심 징역형 집유…이상민 무죄",
+            "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE12dHRpRkZtTWd1UDZaemhvT1ZXNm1Ob29jRlk5T3Z0YWRydmp0WGFBTWk4Nm16b0tLbVJaSnFZSmJvOTZKRDMwOWtkVl9hYnVCdkJXYkpMbTNnUdIBX0FVX3lxTFBieGxaTG52YmNwVE1ISktTZm8wUUNTcXJiTEVTay1QOS1zeklGTkRXM1NLRGVlTjZCQjU1MER4Q2o0UktfejFEUmRFMWRNTWpJMlhZS2RFRUFMdTFuS3dZ?oc=5",
+            "source": "경향신문",
+            "publishedAt": "2026-11-27T01:48:00.000Z"
+          },
+          {
+            "title": "탄핵 연대에 \"책임은 여당\" 쓴소리...조작기소 특검 2명 압축",
+            "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE1UZmc2dTFZaW5zYUpNNUwwcUJOTDNxclBKTTczcktBcUlqcUpjME5QNEZSTU5VN1JDRW5yM2J0WHFFcWhZa2pmUUdWNldnYjBOR3NhUVBZSjNIcU80N2c?oc=5",
+            "source": "YTN",
+            "publishedAt": "2026-11-26T21:25:00.000Z"
+          }
+        ]
+      }
+    },
+    "newsWorld": {
+      "ok": true,
+      "updatedAt": "2026-11-27T04:22:41.955Z",
+      "data": {
+        "items": [
+          {
+            "title": "US too focused on Middle East and not pushing Russia hard enough, Zelensky tells BBC",
+            "link": "https://www.bbc.co.uk/news/articles/c820q9wgrpyyo?at_medium=RSS&at_campaign=rss",
+            "source": "BBC News",
+            "publishedAt": "2026-11-26T22:49:27.000Z"
+          },
+          {
+            "title": "Major Thanksgiving storm brings flooding, flight delays across US",
+            "link": "https://www.bbc.co.uk/news/articles/ckm2mz3prq77o?at_medium=RSS&at_campaign=rss",
+            "source": "BBC News",
+            "publishedAt": "2026-11-27T00:52:11.000Z"
+          },
+          {
+            "title": "Watch: Roofs torn off and streets under water as severe weather hits US",
+            "link": "https://www.bbc.co.uk/news/videos/cq808d704m22o?at_medium=RSS&at_campaign=rss",
+            "source": "BBC News",
+            "publishedAt": "2026-11-26T19:26:16.000Z"
+          }
+        ]
       }
     }
   }
