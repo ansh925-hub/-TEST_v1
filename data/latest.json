@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-27T06:11:25.213Z",
+  "generatedAt": "2026-11-27T08:32:04.394Z",
   "date": "2026-11-27",
   "sources": {
     "weather": {
       "ok": true,
-      "updatedAt": "2026-11-27T06:11:25.213Z",
+      "updatedAt": "2026-11-27T08:32:04.394Z",
       "data": {
         "city": "서울",
-        "temperature": 14.7,
+        "temperature": 12.3,
         "condition": "대체로 맑음",
         "max": 15.1,
         "min": 6.1,
@@ -16,18 +16,18 @@
     },
     "air": {
       "ok": true,
-      "updatedAt": "2026-11-27T06:11:25.213Z",
+      "updatedAt": "2026-11-27T08:32:04.394Z",
       "data": {
         "city": "서울",
-        "pm10": 53.7,
+        "pm10": 54.6,
         "pm10Grade": "보통",
-        "pm25": 43.4,
+        "pm25": 44.7,
         "pm25Grade": "나쁨"
       }
     },
     "fx": {
       "ok": true,
-      "updatedAt": "2026-11-27T06:11:25.213Z",
+      "updatedAt": "2026-11-27T08:32:04.394Z",
       "data": {
         "baseDate": "2026-11-26",
         "rates": {
@@ -52,7 +52,7 @@
     },
     "indicesUS": {
       "ok": true,
-      "updatedAt": "2026-11-27T06:11:25.213Z",
+      "updatedAt": "2026-11-27T08:32:04.394Z",
       "data": {
         "items": [
           {
@@ -84,30 +84,30 @@
     },
     "indicesKR": {
       "ok": true,
-      "updatedAt": "2026-11-27T06:11:25.213Z",
+      "updatedAt": "2026-11-27T08:32:04.394Z",
       "data": {
         "items": [
           {
             "code": "KOSPI",
             "name": "코스피",
-            "price": 4914.73,
+            "price": 4915.68,
             "previousClose": 4711.21,
-            "change": 203.52,
-            "changePct": 4.32,
+            "change": 204.47,
+            "changePct": 4.34,
             "date": "2026-11-27",
-            "asOf": "2026-11-27T05:51:20.000Z",
+            "asOf": "2026-11-27T06:30:40.000Z",
             "closed": true,
             "via": "Yahoo Finance"
           },
           {
             "code": "KOSDAQ",
             "name": "코스닥",
-            "price": 710.63,
+            "price": 708.99,
             "previousClose": 655.71,
-            "change": 54.92,
-            "changePct": 8.38,
+            "change": 53.28,
+            "changePct": 8.13,
             "date": "2026-11-27",
-            "asOf": "2026-11-27T05:51:20.000Z",
+            "asOf": "2026-11-27T06:32:50.000Z",
             "closed": true,
             "via": "Yahoo Finance"
           }
@@ -116,52 +116,52 @@
     },
     "newsDomestic": {
       "ok": true,
-      "updatedAt": "2026-11-27T06:11:25.213Z",
+      "updatedAt": "2026-11-27T08:32:04.394Z",
       "data": {
         "items": [
           {
-            "title": "남경주 국민참여재판 시작… \"영향력 1위\" vs \"선입견 지워줘\" - 머니투데이",
-            "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1ZbDhvZktfRkN5UmpDWi10UVNIZ0o3UC1UcjlQRkhUcHRyM19PcG1zeTdILW4tcVllamNZWlRfXzRiSkhtR3p2azFXWHYtVDI0SmhhdHpHYjdqMmFadkh0b2VMQ3BSR21LN2I00gFwQVVfeXFMT3RzVnZXSGIzejZyRGZybGdQYkJtbHJ2QlZQQmhINmxZM1RPTWk4UUhyWmtjWC1wLS1renQtMmtSQXpHdjJpRjF2LW1TQ1l5aTlyblZoSi1RYmxQX3pBU2NuVkY4TjhDVkNIcXdTWmRZMA?oc=5",
-            "source": "머니투데이",
-            "publishedAt": "2026-11-27T05:41:04.000Z"
+            "title": "이용철 법무장관 후보자 청문보고서 채택…국힘 퇴장",
+            "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBacWlYZjJERDgtTGR0TURfTm1DbWYtZlUtUjV0c2h0YWdXUlZqUDRPN2RvY1NEZDlfQnlJOVpBOHY0LVQ0OGd5R2JkMkprRDMxQVJ3Y1hRaUdZOGl2RkRzSkRPUFVqSnJSSUZkOEdkdVlqaGc3?oc=5",
+            "source": "한겨레",
+            "publishedAt": "2026-11-27T08:09:00.000Z"
           },
           {
-            "title": "'MVP 완벽 부활' KIA 김도영..'7억 5,000' 6년 차 최고 연봉 넘을까",
-            "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5xa09ucFFvTEtyUkxZdkxiUHZreFptSU0zTmpzam95WmZ2WlEtU29BUXJUcnlaWFA4NTV6RW5mQl8yLW9mY1VlVWN2ajZHOVBraThNM1A2UUwxQkZtMzZYVlBn?oc=5",
-            "source": "KBC광주방송",
-            "publishedAt": "2026-11-27T05:32:27.000Z"
+            "title": "생후 1살·초등 입학 때 스마트폰…9살 성적·기억력 갉아먹었다",
+            "link": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE52c1FhdXpHSURKcGFXTkZBYWh6eWFuMFA4U3B2dDJuSGt6Mzl4MnBuUEJkTF9uT1paZUJVN3J6LWE5U1ZPdDA0S09GYnhMTXlwaUd5cXVYd0dNUHhBTXo1QjVR?oc=5",
+            "source": "매일신문",
+            "publishedAt": "2026-11-27T08:07:53.000Z"
           },
           {
-            "title": "생명연, 항생제 피해 숨은 ‘휴면세균’ 깨워 사멸시키는 후보물질 발굴",
-            "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9pNTZ3R09ieGN5azdZS3pjRGRfeEdXdGVDUFFCN1ZNVEkxa3FBYlVXQ2hfUWdTdFczc1FRdTBtcjB1bGNRQi1qbzhLQTJsY213TlgtQXIwdHZad2xUd0dESmJzRy1qSlViX1JqTA?oc=5",
-            "source": "충청뉴스",
-            "publishedAt": "2026-11-27T04:44:04.000Z"
+            "title": "'포스팅 D-5' 노시환 기적의 ML행 성사되나! 美 강정호 전 소속팀에 강력 추천 \"우타 거포 ROH, 피츠버그와 잘 어울려\"",
+            "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOVlcyVmQwSGFPOVdYX1VJeU5pTndyWE9mVU16eFdLcWhwODhfMjJwQ2lXZElSTzlrSldZODVhREI1S203anNlOWZhelpDODZpNE9ma0pHSUpkaE50WEs2Y1JUU3hQdHRicG14VDZ0S3ltLVZGdlA4bzQxbVpUVEl0ZXpxV3J3VkpBczNJ?oc=5",
+            "source": "조선일보",
+            "publishedAt": "2026-11-27T08:04:00.000Z"
           }
         ]
       }
     },
     "newsWorld": {
       "ok": true,
-      "updatedAt": "2026-11-27T06:11:25.213Z",
+      "updatedAt": "2026-11-27T08:32:04.394Z",
       "data": {
         "items": [
+          {
+            "title": "Could housing decide Spain's general election?",
+            "link": "https://www.bbc.co.uk/news/videos/cm9w9y8947xqo?at_medium=RSS&at_campaign=rss",
+            "source": "BBC News",
+            "publishedAt": "2026-11-27T06:09:31.000Z"
+          },
+          {
+            "title": "Houthi attacks test Saudi Arabia's image of security",
+            "link": "https://www.bbc.co.uk/news/articles/c6ly7jgv7jzdo?at_medium=RSS&at_campaign=rss",
+            "source": "BBC News",
+            "publishedAt": "2026-11-27T06:04:51.000Z"
+          },
           {
             "title": "Major Thanksgiving storm brings flooding, flight delays across US",
             "link": "https://www.bbc.co.uk/news/articles/ckm2mz3prq77o?at_medium=RSS&at_campaign=rss",
             "source": "BBC News",
             "publishedAt": "2026-11-27T05:15:26.000Z"
-          },
-          {
-            "title": "New Zealand's ruling coalition falls short of parliamentary majority by one seat",
-            "link": "https://www.bbc.co.uk/news/articles/c670278qk879o?at_medium=RSS&at_campaign=rss",
-            "source": "BBC News",
-            "publishedAt": "2026-11-27T03:28:15.000Z"
-          },
-          {
-            "title": "Met Police ruined my life, says Kenyan man wrongly sentenced over attack on UK couple",
-            "link": "https://www.bbc.co.uk/news/articles/cqvg2nlr8kd8o?at_medium=RSS&at_campaign=rss",
-            "source": "BBC News",
-            "publishedAt": "2026-11-27T00:48:11.000Z"
           }
         ]
       }
