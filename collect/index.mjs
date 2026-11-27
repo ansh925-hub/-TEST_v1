@@ -11,6 +11,7 @@ import * as weather from "./sources/weather.mjs";
 import * as air from "./sources/air.mjs";
 import * as fx from "./sources/fx.mjs";
 import * as news from "./sources/news.mjs";
+import * as indices from "./sources/indices.mjs";
 
 // 새 출처를 추가하려면 sources/에 파일을 만들고 여기에 한 줄 추가한다.
 // history: 날짜별 기록에 남길 값만 골라내는 함수 (차트용)
@@ -25,6 +26,9 @@ export const SOURCES = {
     date: d => d.baseDate,
     history: d => Object.fromEntries(Object.entries(d.rates).map(([c, r]) => [c, r.krw])),
   },
+  // 미국·한국은 거래일이 달라서 묶음을 나누고, 각자의 거래일에 기록한다.
+  indicesUS: { mod: indices.us, date: indices.tradeDate, history: indices.toHistory },
+  indicesKR: { mod: indices.kr, date: indices.tradeDate, history: indices.toHistory },
   newsDomestic: { mod: news.domestic },
   newsWorld: { mod: news.world },
 };
