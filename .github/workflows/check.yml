@@ -33,6 +33,17 @@ jobs:
       # 네트워크 없이 수집기의 계산·병합 규칙만 검사합니다 (collect/*.test.mjs)
       - run: npm test
 
+  data:
+    name: 데이터 검사
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      # data/*.json이 대시보드가 기대하는 모양과 범위인지 검사합니다 (collect/validate.mjs)
+      - run: npm run validate
+
   links:
     name: 깨진 링크 검사
     runs-on: ubuntu-latest

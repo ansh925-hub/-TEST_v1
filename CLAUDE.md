@@ -55,7 +55,8 @@ Claude Code가 이 저장소에서 작업할 때 지키는 지침입니다. 진�
 - `.github/workflows/check.yml`: PR과 `main` 푸시마다 GitHub Actions가 두 가지를 검사한다.
   - **HTML 문법**: `htmlhint` (규칙은 `.htmlhintrc`)
   - **깨진 링크**: `lychee`가 모든 `.html`, `.md` 파일의 링크를 열어 본다
-- PR은 두 검사가 모두 ✅일 때만 Merge를 권한다. ❌이면 `gh run view --log-failed`로 원인을 확인하고 고친다.
+- PR은 모든 검사(HTML 문법·단위 테스트·데이터 검사·깨진 링크)가 ✅일 때만 Merge를 권한다. ❌이면 `gh run view --log-failed`로 원인을 확인하고 고친다.
   - **단위 테스트**: `npm test` (Node 내장 테스트, 네트워크 없이 실행)
+  - **데이터 검사**: `npm run validate` (data/*.json의 모양과 범위. 자동 수집도 커밋 전에 같은 검사를 하고, 걸리면 커밋하지 않는다. 출처를 추가하면 `collect/validate.mjs`의 `DATA_RULES`에도 규칙을 추가)
 - 로컬에서 미리 돌리기: `npm test`, 실제 수집은 `npm run collect` (data/ 파일이 바뀐다).
 - PC의 Node.js는 `C:\Users\eBEST\AppData\Local\Programs\nodejs`에 설치되어 있다. 명령을 못 찾으면 데스크톱 앱을 다시 켜거나 이 경로를 PATH 앞에 붙인다.
