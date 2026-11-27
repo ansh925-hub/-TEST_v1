@@ -4,8 +4,8 @@
 
 ## 핵심 요약
 - **목표**: 휴대폰/PC의 Claude Code로 GitHub 클라우드 저장소를 다루는 방법을 실습하고, 마지막에는 매일 쓰는 개인 웹 도구를 만든다.
-- **완료**: 단계 0~2 중 충돌 실습까지 (커밋 → 푸시 → PR → Merge, Pages 공개, 이슈 자동 종료, 충돌 해결) + PC 폴더 연결 시험 + 지침 파일(`CLAUDE.md`)과 스킬 등록
-- **다음**: ① 단계 3 GitHub Actions 자동 검사 (+ 코드 리뷰) → ② 단계 4 실제 프로젝트
+- **완료**: 단계 0~2 중 충돌 실습까지 (커밋 → 푸시 → PR → Merge, Pages 공개, 이슈 자동 종료, 충돌 해결) + PC 폴더 연결 시험 + 지침 파일(`CLAUDE.md`)과 스킬 등록 + 단계 3 GitHub Actions 자동 검사 (✅/❌ 모두 확인)
+- **다음**: ① 코드 리뷰 실습 → ② 단계 4 실제 프로젝트
 - **사이트**: https://ansh925-hub.github.io/-TEST_v1/ (main 기준 자동 배포)
 
 ---
@@ -23,18 +23,21 @@
 | 8 | PC 폴더 연결 시험: PC 데스크톱 앱 세션에서 `D:\Claude\Git_test`에 `hello.txt` 생성 → 탐색기에서 확인 (사용자) | 로컬 파일 (저장소 밖) |
 | 9 | PC에 Git·GitHub CLI 설치 (사용자) → `gh auth login` → 저장소를 `D:\Claude\Git_test\-TEST_v1`로 clone → PC에서 브랜치·커밋·푸시·PR | PR #7 |
 | 10 | 지침 파일 작성, 자주 하는 작업을 스킬로 등록 (`/session-start`, `/make-pr`, `/after-merge`) | `CLAUDE.md`, `.claude/skills/` |
+| 11 | GitHub Actions 자동 검사 추가: HTML 문법(htmlhint) + 깨진 링크(lychee). 정상 PR은 ✅ | PR #9, `.github/workflows/check.yml` |
+| 12 | 일부러 오류를 넣은 시험 PR → 두 검사 모두 ❌ (HTML 오류 3개, 깨진 링크 2개) → Merge하지 않고 닫음 | PR #10 (닫힘) |
 
 ## 2. 하려던 것 / 남은 것
 | 우선순위 | 항목 | 상태 | 메모 |
 |---|---|---|---|
-| 1 | **단계 3: GitHub Actions 자동 검사** | 진행 중 | `.github/workflows/check.yml` 추가 (htmlhint + lychee). PR마다 HTML 문법과 깨진 링크를 자동 검사 → PR에 ✅/❌ 표시. 일부러 오류를 넣은 PR로 ❌가 뜨는지도 확인 |
-| 2 | 단계 2 나머지: 코드 리뷰 | 미시작 | 단계 3의 PR에서 `/code-review`로 함께 진행 |
-| 3 | 단계 4: 실제 프로젝트 | 미시작 | 추천은 개인 웹 도구 (가계부·습관 기록 등). 원칙: **기능 1개 = PR 1개**, 공개 저장소이므로 개인 데이터는 코드에 넣지 않음 |
+| 1 | **단계 2 나머지: 코드 리뷰** | 미시작 | 다음 PR(단계 4의 첫 기능 등)을 올린 뒤 `/code-review`로 리뷰 받고, 지적 사항을 고쳐서 다시 푸시 |
+| 2 | 단계 4: 실제 프로젝트 | 미시작 | 추천은 개인 웹 도구 (가계부·습관 기록 등). 원칙: **기능 1개 = PR 1개**, 공개 저장소이므로 개인 데이터는 코드에 넣지 않음 |
 | 보류 | Chrome 화면 조작 | 보류 | PC 폴더 연결과는 별개의 기능. 지금 실습에는 필요하지 않다고 판단 |
 
 ## 3. 알게 된 점과 주의사항
 - **클라우드 컨테이너는 임시 공간**이다. 작업할 때마다 커밋하고 푸시해야 남는다.
 - **클라우드 세션에서는 `github.io` 접속이 막혀 있다.** 사이트 화면은 사용자가 직접 확인하고, Claude는 배포 기록(Actions)이 성공했는지만 확인할 수 있다.
+- **검사 ❌가 뜨면**: PR의 Checks에서 실패한 항목을 누르거나 `gh run view --log-failed`로 몇 번째 줄이 문제인지 본다. 링크 검사는 이미지 주소(`src`)도 확인한다.
+- Merge한 원격 브랜치가 GitHub에 남아 있다 (`add-claude-md`, `ci-html-check`, `pc-folder-test`, `ccr-...`). Settings → General → **Automatically delete head branches**를 켜면 앞으로는 자동으로 지워진다 (사용자 설정).
 - **Claude가 할 수 없는 것**: 저장소 Settings 변경(Pages, 기본 브랜치 등), Merge 승인. 이런 작업은 사용자가 웹에서 직접 한다.
 - **GitHub 안드로이드 앱**: PR 확인과 Merge는 편하지만, 파일 편집과 설정 변경은 웹(Chrome)에서 하는 것이 확실하다.
 - 새 세션은 **새 작업 브랜치**에서 시작할 수 있다. 시작하면 먼저 브랜치와 `main` 상태를 확인한다.
@@ -46,5 +49,5 @@
 ## 4. 새 세션 첫 메시지 (복사해서 사용)
 ```
 /session-start
-그다음 "남은 것" 1번(단계 3: GitHub Actions 자동 검사)부터 진행하자.
+그다음 "남은 것" 1번(코드 리뷰 실습)부터 진행하자.
 ```
