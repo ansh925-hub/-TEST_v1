@@ -20,7 +20,12 @@ import * as indices from "./sources/indices.mjs";
 // history가 없는 출처(뉴스)는 latest.json에만 남고 날짜별 기록에는 쌓지 않는다.
 export const SOURCES = {
   weather: { mod: weather, history: d => ({ max: d.max, min: d.min }) },
-  air: { mod: air, history: d => ({ pm10: d.pm10, pm25: d.pm25 }) },
+  // 미세먼지는 측정 시각마다 달라서, 하루에 여러 번 모으면 "그날 가장 나빴던 값"을 남긴다.
+  air: {
+    mod: air,
+    history: d => ({ pm10: d.pm10, pm25: d.pm25 }),
+    combine: (a, b) => ({ pm10: Math.max(a.pm10, b.pm10), pm25: Math.max(a.pm25, b.pm25) }),
+  },
   fx: {
     mod: fx,
     date: d => d.baseDate,
@@ -85,7 +90,9 @@ export function mergeHistory(history, results, now = new Date(), sources = SOURC
     if (value == null) continue; // 출처가 "이번에는 기록할 값 없음"이라고 한 경우 (예: 장중 지수)
     const date = sources[name].date?.(r.data) ?? todayKST(now);
     const entry = byDate.get(date) ?? { date };
-    entry[name] = value;
+    // 같은 날 여러 번 수집하면 기본은 덮어쓰기, combine이 있으면 그 규칙으로 합친다 (예: 미세먼지는 그날 최고값)
+    const prev = entry[name];
+    entry[name] = prev && sources[name].combine ? sources[name].combine(prev, value) : value;
     byDate.set(date, entry);
   }
   return [...byDate.values()]

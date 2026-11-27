@@ -34,6 +34,13 @@ test("같은 날 다시 수집하면 기록을 덮어쓰고, 실패한 출처의
   assert.deepEqual(h[0], { date: "2026-11-27", a: { v: 5 }, b: { w: 2 } });
 });
 
+test("미세먼지는 같은 날 여러 번 모으면 그날 최고값을 남긴다", async () => {
+  const { SOURCES } = await import("./index.mjs");
+  let h = mergeHistory([], { air: { ok: true, data: { pm10: 48, pm25: 40 } } }, T1, SOURCES);
+  h = mergeHistory(h, { air: { ok: true, data: { pm10: 60, pm25: 12 } } }, T2, SOURCES);
+  assert.deepEqual(h[0].air, { pm10: 60, pm25: 40 });
+});
+
 test("기록은 날짜순으로 정렬", () => {
   const h = mergeHistory([{ date: "2026-11-28" }], { a: { ok: true, data: { v: 1 } } }, T1, SRC);
   assert.deepEqual(h.map(x => x.date), ["2026-11-27", "2026-11-28"]);
