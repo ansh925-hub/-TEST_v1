@@ -8,10 +8,19 @@ on:
     - cron: "0 22 * * *" # 한국 07:00 — 미국 장 마감 후, 한국 장 시작 전 (오늘 날씨·미국 종가)
     - cron: "10 7 * * *" # 한국 16:10 — 한국 장 마감 후 (코스피·코스닥 종가)
   workflow_dispatch: # Actions 화면의 "Run workflow" 버튼으로 직접 실행
+    inputs:
+      force_fail:
+        description: "실패 알림 시험: 일부러 실패시킬 출처 (예: weather,fx). 비우면 평소처럼 수집. 시험 실행은 데이터를 커밋하지 않음"
+        required: false
+        default: ""
 
 permissions:
   contents: write # data/ 커밋과 푸시에 필요
   pages: write # 봇 푸시 뒤 Pages 다시 배포 요청에 필요
+  issues: write # 수집 실패 이슈 등록·닫기에 필요
+
+env:
+  FAIL_LABEL: 수집 실패
 
 # 두 번 겹쳐 실행되면 나중 것이 앞의 것을 기다립니다 (동시에 푸시하다 충돌하지 않게)
 concurrency:
@@ -32,12 +41,18 @@ jobs:
       # 출처 하나가 실패해도 나머지 결과는 저장해야 하므로, 실패를 기록만 하고 다음 단계로 갑니다.
       - name: 수집
         id: collect
+        env:
+          COLLECT_FORCE_FAIL: ${{ inputs.force_fail }}
         run: |
-          if npm run collect; then echo "failed=false" >> "$GITHUB_OUTPUT"
+          # 결과 줄(✅/❌)을 collect.log에도 남겨서 실패 이슈 본문에 쓴다
+          set -o pipefail
+          if npm run -s collect 2>&1 | tee collect.log; then echo "failed=false" >> "$GITHUB_OUTPUT"
           else echo "failed=true" >> "$GITHUB_OUTPUT"; fi
 
       - name: 바뀐 데이터 커밋
         id: commit
+        # 실패 알림 시험 실행은 일부러 망가뜨린 결과라서 커밋하지 않는다
+        if: inputs.force_fail == ''
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -69,6 +84,46 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh api -X POST "repos/${{ github.repository }}/pages/builds" --silent || echo "::warning::Pages 배포 요청 실패"
+
+      # 실패하면 "수집 실패" 이슈를 하나 열어 두고(이미 열려 있으면 댓글만 추가),
+      # 모두 성공하면 열려 있던 이슈에 "복구됨" 댓글을 달고 닫는다. 이슈가 쌓이지 않게 항상 하나만 쓴다.
+      - name: 실패 이슈 등록 또는 복구 시 닫기
+        if: always() && steps.collect.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FAILED: ${{ steps.collect.outputs.failed == 'true' || steps.commit.outputs.failed == 'true' }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TEST_RUN: ${{ inputs.force_fail != '' }}
+        run: |
+          gh label create "$FAIL_LABEL" --color D93F0B --description "자동 데이터 수집 실패 알림" --force >/dev/null
+          issue=$(gh issue list --label "$FAIL_LABEL" --state open --limit 1 --json number -q '.[0].number')
+          now="$(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M') KST"
+          if [ "$FAILED" = "true" ]; then
+            {
+              [ "$TEST_RUN" = "true" ] && echo "> 🧪 **시험 실행**이에요 (일부러 실패시킨 출처가 있어요). 데이터는 커밋하지 않았어요."
+              echo "**$now** 수집에서 실패한 출처가 있어요. 대시보드에는 직전에 성공한 값이 표시돼요."
+              echo
+              echo '```'
+              grep -E '^(❌|⚠️)' collect.log || echo "(실패 줄을 찾지 못함 — 실행 기록 확인)"
+              echo '```'
+              echo
+              echo "실행 기록: $RUN_URL"
+            } > body.md
+            if [ -n "$issue" ]; then
+              gh issue comment "$issue" --body-file body.md
+            else
+              {
+                cat body.md
+                echo
+                echo "---"
+                echo "모든 출처가 다시 성공하면 이 이슈는 자동으로 닫혀요. 같은 문제가 계속되면 이 이슈에 댓글이 이어서 달려요."
+              } > new.md
+              gh issue create --title "데이터 수집 실패" --label "$FAIL_LABEL" --body-file new.md
+            fi
+          elif [ -n "$issue" ]; then
+            gh issue comment "$issue" --body "✅ **$now** 수집에서 모든 출처가 다시 성공해서 닫아요. 실행 기록: $RUN_URL"
+            gh issue close "$issue" --reason completed
+          fi
 
       # 저장은 끝냈으니, 실패한 출처가 있었다면 여기서 실패로 표시합니다 (Actions에 ❌).
       - name: 실패한 출처 확인

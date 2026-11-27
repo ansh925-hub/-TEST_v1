@@ -1,7 +1,7 @@
 // 수집기 단위 테스트 (네트워크 없이 실행). 실행: npm test
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mergeLatest, mergeHistory } from "./index.mjs";
+import { mergeLatest, mergeHistory, collectAll, forcedFailures } from "./index.mjs";
 import { grade } from "./sources/air.mjs";
 import { todayKST } from "./lib.mjs";
 
@@ -39,6 +39,16 @@ test("미세먼지는 같은 날 여러 번 모으면 그날 최고값을 남긴
   let h = mergeHistory([], { air: { ok: true, data: { pm10: 48, pm25: 40 } } }, T1, SOURCES);
   h = mergeHistory(h, { air: { ok: true, data: { pm10: 60, pm25: 12 } } }, T2, SOURCES);
   assert.deepEqual(h[0].air, { pm10: 60, pm25: 40 });
+});
+
+test("COLLECT_FORCE_FAIL에 적은 출처만 실패하고, 나머지는 그대로 수집", async () => {
+  assert.deepEqual([...forcedFailures(" weather, fx ,")], ["weather", "fx"]);
+  assert.equal(forcedFailures("").size, 0);
+  const fake = { a: { mod: { collect: async () => ({ v: 1 }) } }, b: { mod: { collect: async () => ({ v: 2 }) } } };
+  const r = await collectAll(fake, forcedFailures("b"));
+  assert.deepEqual(r.a, { ok: true, data: { v: 1 } });
+  assert.equal(r.b.ok, false);
+  assert.match(r.b.error, /강제 실패/);
 });
 
 test("기록은 날짜순으로 정렬", () => {
