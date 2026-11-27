@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>오늘의 대시보드</title>
+<meta name="description" content="날씨·미세먼지·환율·주가지수·뉴스를 매일 자동으로 모아 보여 주는 개인 대시보드">
+<style>
+  :root {
+    --bg: #f5f5f2; --card: #ffffff; --text: #1c1c1a; --muted: #6b6b65; --line: #e4e4de;
+    --accent: #2f6fed; --up: #d6336c; --down: #1c7ed6; --warn-bg: #fff4e0; --warn: #9a5b00;
+    --g1: #1f9d55; --g2: #2f6fed; --g3: #e8590c; --g4: #c92a2a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141413; --card: #1e1e1c; --text: #ececea; --muted: #a3a39c; --line: #33332f;
+      --accent: #6b9bff; --up: #ff6b8f; --down: #5aa9ff; --warn-bg: #3a2a10; --warn: #ffc46b;
+      --g1: #4cc38a; --g2: #6b9bff; --g3: #ff922b; --g4: #ff6b6b;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text); line-height: 1.5;
+    font-family: -apple-system, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    font-variant-numeric: tabular-nums;
+  }
+  main { max-width: 1080px; margin: 0 auto; padding: 24px 16px 40px; }
+  header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; margin-bottom: 16px; }
+  h1 { font-size: 1.5rem; margin: 0; }
+  .updated { color: var(--muted); font-size: .9rem; }
+  .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; min-width: 0; }
+  .card h2 { font-size: 1rem; margin: 0 0 10px; display: flex; justify-content: space-between; gap: 8px; }
+  .card h2 small { color: var(--muted); font-weight: normal; font-size: .8rem; }
+  .big { font-size: 2.2rem; font-weight: 700; line-height: 1.1; }
+  .muted { color: var(--muted); font-size: .88rem; }
+  .row { display: grid; grid-template-columns: 1fr auto 88px; align-items: center; gap: 8px; padding: 7px 0; border-top: 1px solid var(--line); }
+  .row:first-of-type { border-top: 0; }
+  .row .name { min-width: 0; }
+  .row .val { text-align: right; }
+  .row .val b { display: block; }
+  .up { color: var(--up); } .down { color: var(--down); }
+  .badge { display: inline-block; font-size: .72rem; padding: 1px 7px; border-radius: 999px; border: 1px solid currentColor; vertical-align: 2px; }
+  .warn { background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 6px 10px; font-size: .82rem; margin-bottom: 10px; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .pm b { font-size: 1.6rem; }
+  ol.news { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  ol.news a { color: var(--text); text-decoration: none; font-weight: 600; }
+  ol.news a:hover { color: var(--accent); text-decoration: underline; }
+  svg.spark { width: 88px; height: 28px; display: block; }
+  svg.spark.wide { width: 100%; height: 44px; margin-top: 10px; }
+  footer { margin-top: 24px; color: var(--muted); font-size: .8rem; }
+  footer a { color: inherit; }
+  @media (max-width: 400px) { .row { grid-template-columns: 1fr auto 64px; } svg.spark { width: 64px; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>오늘의 대시보드</h1>
+    <span class="updated" id="updated">불러오는 중…</span>
+  </header>
+  <div class="grid">
+    <section class="card" id="weather"><h2>☀️ 날씨</h2></section>
+    <section class="card" id="air"><h2>😷 미세먼지</h2></section>
+    <section class="card" id="fx"><h2>💱 환율</h2></section>
+    <section class="card" id="indicesUS"><h2>📈 미국 지수</h2></section>
+    <section class="card" id="indicesKR"><h2>📈 한국 지수</h2></section>
+    <section class="card" id="newsDomestic"><h2>📰 국내 뉴스</h2></section>
+    <section class="card" id="newsWorld"><h2>🌏 해외 뉴스</h2></section>
+  </div>
+  <footer>
+    <p>매일 한국 시간 07:00·16:10에 GitHub Actions가 자동으로 수집합니다. 지수·환율은 참고용이며 투자 판단의 근거가 아닙니다.</p>
+    <p>출처: 날씨·미세먼지 <a href="https://open-meteo.com/">Open-Meteo</a> ·
+      환율 <a href="https://frankfurter.dev/">Frankfurter</a>(유럽중앙은행) ·
+      지수 Yahoo Finance / <a href="https://fred.stlouisfed.org/">FRED</a> ·
+      뉴스 Google 뉴스, <a href="https://www.bbc.com/news/world">BBC News</a> (제목과 링크만 표시) ·
+      <a href="../">실습 체크리스트로</a></p>
+  </footer>
+</main>
+<script>
+"use strict";
+// 주의: 수집한 글자는 외부에서 온 값이므로 모두 textContent로 넣는다 (innerHTML 사용 금지).
+
+const KST = { timeZone: "Asia/Seoul" };
+const fmtTime = iso => new Intl.DateTimeFormat("ko-KR", { ...KST, month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(iso));
+const fmtNum = (n, d = 2) => n.toLocaleString("ko-KR", { minimumFractionDigits: d, maximumFractionDigits: d });
+
+/** 요소 만들기: el("div", {class: "x"}, "글자", 자식요소…) */
+function el(tag, attrs = {}, ...children) {
+  const node = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) if (v != null) node.setAttribute(k, v);
+  for (const c of children) if (c != null) node.append(c instanceof Node ? c : String(c));
+  return node;
+}
+
+/** 부모에 자식들을 붙인다. null(예: 그릴 값이 부족한 그래프)은 건너뛴다. */
+function put(parent, ...children) {
+  for (const c of children) if (c != null) parent.append(c);
+}
+
+/** http/https 주소만 링크로 쓴다 */
+function safeHref(s) {
+  try { const u = new URL(s); return u.protocol === "https:" || u.protocol === "http:" ? u.href : null; }
+  catch { return null; }
+}
+
+function ago(iso) {
+  if (!iso) return "";
+  const min = Math.round((Date.now() - new Date(iso)) / 60000);
+  if (min < 60) return `${Math.max(min, 0)}분 전`;
+  if (min < 60 * 24) return `${Math.round(min / 60)}시간 전`;
+  return `${Math.round(min / 1440)}일 전`;
+}
+
+/** 최근 30일 값으로 작은 선 그래프(SVG). 값이 2개 미만이면 그리지 않는다. */
+function spark(values, { wide = false, label = "" } = {}) {
+  const pts = values.filter(v => typeof v === "number" && Number.isFinite(v));
+  if (pts.length < 2) return null;
+  const NS = "http://www.w3.org/2000/svg";
+  const w = 100, h = 30, min = Math.min(...pts), max = Math.max(...pts), span = max - min || 1;
+  const svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  svg.setAttribute("preserveAspectRatio", "none");
+  svg.setAttribute("class", wide ? "spark wide" : "spark");
+  svg.setAttribute("role", "img");
+  svg.setAttribute("aria-label", `${label} 최근 ${pts.length}일 추이`);
+  const line = document.createElementNS(NS, "polyline");
+  line.setAttribute("points", pts.map((v, i) => `${(i / (pts.length - 1)) * w},${h - 2 - ((v - min) / span) * (h - 4)}`).join(" "));
+  line.setAttribute("fill", "none");
+  line.setAttribute("stroke", "currentColor");
+  line.setAttribute("stroke-width", "1.5");
+  line.setAttribute("vector-effect", "non-scaling-stroke");
+  svg.append(line);
+  return svg;
+}
+
+/** history에서 최근 30일의 특정 값 목록 */
+function series(history, source, pick) {
+  return history.filter(h => h[source]).slice(-30).map(h => pick(h[source]));
+}
+
+/** 카드 공통: 제목 옆 갱신 시각, 실패·데이터 없음 안내. 그릴 data를 돌려준다(없으면 null). */
+function prepare(card, src) {
+  const h2 = card.querySelector("h2");
+  if (src?.updatedAt) h2.append(el("small", {}, fmtTime(src.updatedAt)));
+  if (!src || !src.data) {
+    put(card, el("p", { class: "muted" }, src?.error ? `아직 데이터가 없습니다 (수집 실패: ${src.error})` : "아직 데이터가 없습니다"));
+    return null;
+  }
+  if (!src.ok) put(card, el("div", { class: "warn" }, `최근 수집에 실패해서 ${fmtTime(src.updatedAt)} 값을 보여 줍니다`));
+  return src.data;
+}
+
+function changeSpan(change, pct) {
+  const cls = change > 0 ? "up" : change < 0 ? "down" : "";
+  const sign = change > 0 ? "▲" : change < 0 ? "▼" : "";
+  return el("span", { class: cls }, `${sign}${fmtNum(Math.abs(change))} (${pct > 0 ? "+" : ""}${fmtNum(pct)}%)`);
+}
+
+const GRADE_COLOR = { "좋음": "var(--g1)", "보통": "var(--g2)", "나쁨": "var(--g3)", "매우 나쁨": "var(--g4)" };
+
+const render = {
+  weather(card, d, history) {
+    put(card, 
+      el("div", { class: "big" }, `${fmtNum(d.temperature, 1)}°`),
+      el("div", {}, `${d.city} · ${d.condition}`),
+      el("div", { class: "muted" }, `최고 ${fmtNum(d.max, 1)}° / 최저 ${fmtNum(d.min, 1)}°` +
+        (d.precipitationChance == null ? "" : ` · 강수 확률 ${d.precipitationChance}%`)),
+      spark(series(history, "weather", w => w.max), { wide: true, label: "최고 기온" }),
+    );
+  },
+  air(card, d, history) {
+    const pm = (label, v, grade) => el("div", { class: "pm" },
+      el("div", { class: "muted" }, label),
+      el("b", {}, fmtNum(v, 0)), " ㎍/㎥ ",
+      el("span", { class: "badge", style: `color:${GRADE_COLOR[grade] ?? "inherit"}` }, grade));
+    put(card, 
+      el("div", { class: "pair" }, pm("PM10 (미세먼지)", d.pm10, d.pm10Grade), pm("PM2.5 (초미세먼지)", d.pm25, d.pm25Grade)),
+      spark(series(history, "air", a => a.pm25), { wide: true, label: "초미세먼지 일 최고" }),
+      el("div", { class: "muted" }, `${d.city} · 등급은 환경부 예보 기준 · 그래프는 날마다 가장 나빴던 PM2.5`),
+    );
+  },
+  fx(card, d, history) {
+    for (const [code, r] of Object.entries(d.rates)) {
+      put(card, el("div", { class: "row" },
+        el("span", { class: "name" }, r.unit === 1 ? code : `${code} ${r.unit}`),
+        el("span", { class: "val" }, el("b", {}, `${fmtNum(r.krw)}원`)),
+        spark(series(history, "fx", f => f[code]), { label: code })));
+    }
+    put(card, el("div", { class: "muted" }, `기준일 ${d.baseDate} · 유럽중앙은행 기준환율이라 은행 고시 환율과 다를 수 있음`));
+  },
+  indices(card, d, history, source) {
+    for (const i of d.items) {
+      const name = el("span", { class: "name" }, i.name, " ");
+      if (i.error) {
+        put(card, el("div", { class: "row" }, name, el("span", { class: "val muted" }, "불러오지 못함"), null));
+        continue;
+      }
+      name.append(el("span", { class: "badge" }, i.closed === false ? "장중" : "종가"));
+      put(card, el("div", { class: "row" },
+        name,
+        el("span", { class: "val" }, el("b", {}, fmtNum(i.price)), changeSpan(i.change, i.changePct)),
+        spark(series(history, source, x => x[i.code]), { label: i.name })));
+    }
+    const dates = [...new Set(d.items.filter(i => !i.error).map(i => i.date))].join(", ");
+    const via = [...new Set(d.items.filter(i => i.via && i.via !== "Yahoo Finance").map(i => i.via))];
+    put(card, el("div", { class: "muted" }, `거래일 ${dates}` + (via.length ? ` · 일부 ${via.join(", ")} 값` : "")));
+  },
+  news(card, d) {
+    const list = el("ol", { class: "news" });
+    for (const n of d.items) {
+      const href = safeHref(n.link);
+      const title = href ? el("a", { href, target: "_blank", rel: "noopener noreferrer" }, n.title) : el("span", {}, n.title);
+      list.append(el("li", {}, title, el("div", { class: "muted" }, [n.source, ago(n.publishedAt)].filter(Boolean).join(" · "))));
+    }
+    put(card, list);
+  },
+};
+
+async function getJSON(path) {
+  // GitHub Pages는 약 10분 동안 캐시하므로 주소에 시각을 붙여 항상 새로 받는다
+  const res = await fetch(`${path}?t=${Date.now()}`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`${path}: HTTP ${res.status}`);
+  return res.json();
+}
+
+async function main() {
+  const updated = document.getElementById("updated");
+  let latest, history;
+  try {
+    [latest, history] = await Promise.all([getJSON("../data/latest.json"), getJSON("../data/history.json")]);
+  } catch (e) {
+    updated.textContent = `데이터를 불러오지 못했습니다 (${e.message})`;
+    return;
+  }
+  updated.textContent = `마지막 수집 ${fmtTime(latest.generatedAt)} (${ago(latest.generatedAt)})`;
+  const draw = {
+    weather: render.weather, air: render.air, fx: render.fx,
+    indicesUS: (c, d, h) => render.indices(c, d, h, "indicesUS"),
+    indicesKR: (c, d, h) => render.indices(c, d, h, "indicesKR"),
+    newsDomestic: render.news, newsWorld: render.news,
+  };
+  for (const [id, fn] of Object.entries(draw)) {
+    const card = document.getElementById(id);
+    try {
+      const data = prepare(card, latest.sources?.[id]);
+      if (data) fn(card, data, Array.isArray(history) ? history : []);
+    } catch (e) {
+      // 카드 하나가 깨져도 나머지는 보이게
+      put(card, el("p", { class: "muted" }, `표시 중 오류: ${e.message}`));
+    }
+  }
+}
+
+main();
+</script>
+</body>
+</html>
