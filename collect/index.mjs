@@ -7,6 +7,7 @@
 import { readFile, writeFile, mkdir, rename } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { todayKST } from "./lib.mjs";
+import { validateSource } from "./validate.mjs";
 import * as weather from "./sources/weather.mjs";
 import * as air from "./sources/air.mjs";
 import * as fx from "./sources/fx.mjs";
@@ -112,8 +113,20 @@ export function mergeHistory(history, results, now = new Date(), sources = SOURC
     .slice(-HISTORY_DAYS);
 }
 
+/**
+ * 받아 온 값이 말이 안 되는 출처는 "실패"로 바꾼다 → 그 출처만 직전 값을 유지하고 나머지는 그대로 저장된다.
+ * (값 하나가 이상하다고 전체 저장을 막지 않기 위해)
+ */
+export function rejectInvalid(results) {
+  return Object.fromEntries(Object.entries(results).map(([name, r]) => {
+    if (!r.ok) return [name, r];
+    const errors = validateSource(name, r.data);
+    return [name, errors.length ? { ok: false, error: `데이터 검사 실패: ${errors.join("; ")}` } : r];
+  }));
+}
+
 async function main() {
-  const results = await collectAll();
+  const results = rejectInvalid(await collectAll());
   const prevLatest = await readJSON(LATEST, null);
   const prevHistory = await readJSON(HISTORY, []);
   await mkdir(DATA_DIR, { recursive: true });

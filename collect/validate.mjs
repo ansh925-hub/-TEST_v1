@@ -3,15 +3,12 @@
 // 범위는 "고장 감지"용으로 넉넉하게 잡았다 (예: 환율이 0이거나 단위가 100배 틀린 경우를 잡는 정도).
 import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-import { SOURCES } from "./index.mjs";
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 const GRADES = ["좋음", "보통", "나쁨", "매우 나쁨"];
 // 원화 환산 값의 허용 범위 (단위: USD·EUR·CNY는 1, JPY는 100)
 const FX_RANGE = { USD: [500, 3000], JPY: [300, 3000], EUR: [500, 3500], CNY: [50, 600] };
 const INDEX_CODES = { indicesUS: ["SPX", "NDX"], indicesKR: ["KOSPI", "KOSDAQ"] };
-// 수집기에 등록된 출처 이름과 항상 같게 (출처를 추가하면 아래 DATA_RULES에 검사도 추가해야 테스트가 통과)
-export const SOURCE_NAMES = Object.keys(SOURCES);
 const MAX_HISTORY = 400;
 
 /** 검사 도우미: 문제를 errors 배열에 쌓는다 */
@@ -70,6 +67,21 @@ const DATA_RULES = {
   newsWorld: news,
 };
 
+// 검사 규칙이 있는 출처 = 대시보드가 아는 출처. 수집기의 SOURCES와 같은지는 테스트가 확인한다
+// (수집기가 이 파일을 불러 쓰므로, 여기서 수집기를 불러오면 서로 물고 물리게 된다)
+export const SOURCE_NAMES = Object.keys(DATA_RULES);
+
+/** 출처 하나의 data 검사 → 문제 목록. 수집기가 저장 전에 출처별로 부른다. */
+export function validateSource(name, data, prefix = `${name}.data`) {
+  const errors = [];
+  const rule = DATA_RULES[name];
+  if (!rule) return [`${prefix}: "${name}"에 대한 검사 규칙이 없음 (collect/validate.mjs의 DATA_RULES에 추가)`];
+  if (!data || typeof data !== "object") return [`${prefix}: 객체가 아님`];
+  try { rule(checker(errors, prefix), data); }
+  catch (e) { errors.push(`${prefix}: 검사 중 오류 (${e.message})`); }
+  return errors;
+}
+
 function indices(c, d, codes) {
   if (!Array.isArray(d.items)) return c.fail(".items", "목록이 아님");
   const seen = d.items.map(i => i.code);
@@ -108,7 +120,7 @@ export function validateLatest(latest) {
     if (typeof s.ok !== "boolean") c.fail(`.sources.${name}.ok`, "true/false가 아님");
     if (s.ok && !s.data) c.fail(`.sources.${name}`, "성공인데 data가 없음");
     if (!s.ok) c.str(`.sources.${name}.error`, s.error, { max: 2000 });
-    if (s.data) DATA_RULES[name](checker(errors, `latest.sources.${name}.data`), s.data);
+    if (s.data) errors.push(...validateSource(name, s.data, `latest.sources.${name}.data`));
   }
   return errors;
 }
@@ -121,9 +133,11 @@ export function validateHistory(history) {
   if (history.length > MAX_HISTORY) c.fail("", `기록이 너무 많음 (${history.length}개)`);
   history.forEach((h, i) => {
     const p = `[${i}]`;
-    c.date(`${p}.date`, h?.date);
-    if (i > 0 && !(history[i - 1].date < h.date)) c.fail(`${p}.date`, `날짜순이 아니거나 중복 (${history[i - 1].date} → ${h.date})`);
-    for (const [name, v] of Object.entries(h ?? {})) {
+    if (!h || typeof h !== "object" || Array.isArray(h)) return c.fail(p, "객체가 아님");
+    c.date(`${p}.date`, h.date);
+    const prev = history[i - 1]?.date;
+    if (i > 0 && !(prev < h.date)) c.fail(`${p}.date`, `날짜순이 아니거나 중복 (${prev} → ${h.date})`);
+    for (const [name, v] of Object.entries(h)) {
       if (name === "date") continue;
       if (!SOURCE_NAMES.includes(name)) { c.fail(`${p}.${name}`, "모르는 출처"); continue; }
       if (name.startsWith("news")) { c.fail(`${p}.${name}`, "뉴스는 기록에 쌓으면 안 됨"); continue; }

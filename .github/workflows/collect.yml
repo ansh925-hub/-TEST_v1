@@ -46,11 +46,13 @@ jobs:
         run: |
           # 결과 줄(✅/❌)을 collect.log에도 남겨서 실패 이슈 본문에 쓴다
           set -o pipefail
-          if npm run -s collect 2>&1 | tee collect.log; then echo "failed=false" >> "$GITHUB_OUTPUT"
-          else echo "failed=true" >> "$GITHUB_OUTPUT"; fi
-          # 저장하기 전에 데이터가 말이 되는지 검사한다. 이상하면 커밋하지 않고(사이트는 직전 값 유지) 실패로 알린다.
-          if npm run -s validate 2>&1 | tee -a collect.log; then echo "invalid=false" >> "$GITHUB_OUTPUT"
-          else echo "invalid=true" >> "$GITHUB_OUTPUT"; echo "failed=true" >> "$GITHUB_OUTPUT"; fi
+          failed=false; invalid=false
+          # 수집기는 출처별로 값을 검사해서, 이상한 출처만 실패로 바꾸고(직전 값 유지) 나머지는 저장한다.
+          npm run -s collect 2>&1 | tee collect.log || failed=true
+          # 마지막 안전장치: 파일 전체를 다시 검사한다. 여기서 걸리면 커밋하지 않는다(사이트는 직전 값 유지).
+          npm run -s validate 2>&1 | tee -a collect.log || { invalid=true; failed=true; }
+          echo "failed=$failed" >> "$GITHUB_OUTPUT"
+          echo "invalid=$invalid" >> "$GITHUB_OUTPUT"
 
       - name: 바뀐 데이터 커밋
         id: commit
