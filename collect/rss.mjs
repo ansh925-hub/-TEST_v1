@@ -18,8 +18,10 @@ export function decodeEntities(s) {
 export function tagText(xml, name) {
   const m = xml.match(new RegExp(`<${name}\\b[^>]*>([\\s\\S]*?)</${name}>`, "i"));
   if (!m) return null;
-  const raw = m[1].replace(/^\s*<!\[CDATA\[([\s\S]*?)\]\]>\s*$/, "$1");
-  return decodeEntities(raw).replace(/\s+/g, " ").trim();
+  // CDATA 안의 글자는 이미 있는 그대로라서 엔티티를 풀면 안 된다 (예: "AT&amp;T"는 그대로 둠)
+  const cdata = m[1].match(/^\s*<!\[CDATA\[([\s\S]*?)\]\]>\s*$/);
+  const text = cdata ? cdata[1] : decodeEntities(m[1]);
+  return text.replace(/\s+/g, " ").trim();
 }
 
 /** http/https 주소만 통과시킨다 (javascript: 같은 위험한 주소 차단). */
@@ -31,7 +33,9 @@ export function safeUrl(s) {
 }
 
 /**
- * RSS 문자열 → [{title, link, source, publishedAt}] (앞에서부터 limit개, 제목 중복 제거)
+ * RSS 문자열 → [{title, link, source, publishedAt}]
+ * 최신순(발행 시각이 없는 기사는 맨 뒤)으로 정렬해서 limit개, 제목 중복 제거.
+ * 주의: title은 HTML이 아닌 "그냥 글자"다. 화면에 넣을 때는 반드시 textContent로 넣는다 (innerHTML 금지).
  * @param {string} xml
  * @param {{limit?: number, defaultSource?: string}} opts
  */
@@ -49,7 +53,9 @@ export function parseRss(xml, { limit = 3, defaultSource = null } = {}) {
     seen.add(title);
     const date = new Date(tagText(item, "pubDate") ?? "");
     out.push({ title, link, source, publishedAt: Number.isNaN(date.getTime()) ? null : date.toISOString() });
-    if (out.length >= limit) break;
   }
-  return out;
+  // ISO 문자열은 글자 순서 = 시간 순서. 시각이 없으면("") 맨 뒤로. 같은 시각이면 피드 순서 유지(안정 정렬).
+  return out
+    .sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? ""))
+    .slice(0, limit);
 }

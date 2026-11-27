@@ -36,6 +36,27 @@ test("BBC: CDATA 제목, &amp; 들어간 링크, 기본 언론사 이름", () =>
   assert.equal("description" in item, false); // 본문은 저장하지 않음
 });
 
+test("피드 순서가 아니라 최신순으로 고른다", () => {
+  const xml = `<rss><channel>
+<item><title>오래된</title><link>https://e.com/1</link><pubDate>Thu, 26 Nov 2026 19:26:16 GMT</pubDate></item>
+<item><title>시각 없음</title><link>https://e.com/2</link></item>
+<item><title>가장 최신</title><link>https://e.com/3</link><pubDate>Fri, 27 Nov 2026 00:52:11 GMT</pubDate></item>
+<item><title>중간</title><link>https://e.com/4</link><pubDate>Thu, 26 Nov 2026 22:49:27 GMT</pubDate></item>
+</channel></rss>`;
+  assert.deepEqual(parseRss(xml, { limit: 3 }).map(i => i.title), ["가장 최신", "중간", "오래된"]);
+});
+
+test("CDATA 안은 엔티티를 풀지 않고, 제목은 HTML이 아닌 글자로 남긴다", () => {
+  const xml = `<rss><channel>
+<item><title><![CDATA[AT&amp;T explained]]></title><link>https://e.com/1</link></item>
+<item><title>&lt;img src=x onerror=alert(1)&gt;</title><link>https://e.com/2</link></item>
+</channel></rss>`;
+  const titles = parseRss(xml).map(i => i.title);
+  assert.equal(titles[0], "AT&amp;T explained");
+  // 글자 그대로 저장됨 → 화면에서는 textContent로 넣어야 안전 (CLAUDE.md 규칙)
+  assert.equal(titles[1], "<img src=x onerror=alert(1)>");
+});
+
 test("엔티티와 링크 검사", () => {
   assert.equal(decodeEntities("A&#39;s &#x2014; &lt;b&gt; &unknown;"), "A's — <b> &unknown;");
   assert.equal(safeUrl("javascript:alert(1)"), null);
