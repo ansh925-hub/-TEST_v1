@@ -49,6 +49,8 @@ test("COLLECT_FORCE_FAIL에 적은 출처만 실패하고, 나머지는 그대�
   assert.deepEqual(r.a, { ok: true, data: { v: 1 } });
   assert.equal(r.b.ok, false);
   assert.match(r.b.error, /강제 실패/);
+  // 오타는 조용히 넘어가지 않고 오류
+  await assert.rejects(collectAll(fake, forcedFailures("c")), /모르는 출처: c/);
 });
 
 test("기록은 날짜순으로 정렬", () => {

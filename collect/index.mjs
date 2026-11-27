@@ -68,6 +68,9 @@ export function forcedFailures(value = process.env.COLLECT_FORCE_FAIL ?? "") {
 /** 출처들을 동시에 수집해서 {이름: {ok, data | error}} 형태로 돌려준다. */
 export async function collectAll(sources = SOURCES, forceFail = forcedFailures()) {
   const names = Object.keys(sources);
+  // 오타로 아무것도 실패하지 않은 채 "시험 성공"처럼 보이지 않도록, 모르는 이름은 바로 오류
+  const unknown = [...forceFail].filter(n => !names.includes(n));
+  if (unknown.length) throw new Error(`COLLECT_FORCE_FAIL에 모르는 출처: ${unknown.join(", ")} (가능: ${names.join(", ")})`);
   const results = await Promise.allSettled(names.map(n =>
     forceFail.has(n) ? Promise.reject(new Error("시험용 강제 실패 (COLLECT_FORCE_FAIL)")) : sources[n].mod.collect()));
   return Object.fromEntries(names.map((n, i) => {

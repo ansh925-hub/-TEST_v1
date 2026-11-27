@@ -91,7 +91,8 @@ jobs:
         if: always() && steps.collect.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
-          FAILED: ${{ steps.collect.outputs.failed == 'true' || steps.commit.outputs.failed == 'true' }}
+          # 수집 실패, 다시 수집 중 실패, 푸시 실패 중 하나라도 있으면 "실패"
+          FAILED: ${{ steps.collect.outputs.failed == 'true' || steps.commit.outputs.failed == 'true' || steps.commit.outcome == 'failure' }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           TEST_RUN: ${{ inputs.force_fail != '' }}
         run: |
@@ -104,13 +105,21 @@ jobs:
               echo "**$now** 수집에서 실패한 출처가 있어요. 대시보드에는 직전에 성공한 값이 표시돼요."
               echo
               echo '```'
-              grep -E '^(❌|⚠️)' collect.log || echo "(실패 줄을 찾지 못함 — 실행 기록 확인)"
+              grep -E '^(❌|⚠️|Error)' collect.log > failures.txt || echo "(출처 실패 없음 — 데이터 저장·푸시 단계 실패. 실행 기록 확인)" > failures.txt
+              cat failures.txt
               echo '```'
               echo
               echo "실행 기록: $RUN_URL"
             } > body.md
             if [ -n "$issue" ]; then
-              gh issue comment "$issue" --body-file body.md
+              # 같은 실패가 계속되면 댓글을 반복하지 않는다 (알림 폭탄 방지). 실패한 출처 이름이 달라졌을 때만 댓글.
+              names() { grep -oE '^(❌|⚠️) [^:]+' | sort -u; }
+              last=$(gh issue view "$issue" --json body,comments -q '([.body] + [.comments[].body]) | last')
+              if [ "$(names < failures.txt)" = "$(printf '%s\n' "$last" | names)" ] && [ "$TEST_RUN" != "true" ]; then
+                echo "이슈 #$issue: 지난번과 같은 실패라 댓글 생략"
+              else
+                gh issue comment "$issue" --body-file body.md
+              fi
             else
               {
                 cat body.md
@@ -120,7 +129,8 @@ jobs:
               } > new.md
               gh issue create --title "데이터 수집 실패" --label "$FAIL_LABEL" --body-file new.md
             fi
-          elif [ -n "$issue" ]; then
+          elif [ -n "$issue" ] && [ "$TEST_RUN" != "true" ]; then
+            # 시험 실행은 데이터를 커밋하지 않으므로 "복구"로 치지 않는다
             gh issue comment "$issue" --body "✅ **$now** 수집에서 모든 출처가 다시 성공해서 닫아요. 실행 기록: $RUN_URL"
             gh issue close "$issue" --reason completed
           fi
