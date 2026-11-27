@@ -48,7 +48,7 @@
 <body>
 <main>
   <h1>GitHub 연동 실습 체크리스트</h1>
-  <p class="sub">모바일 Claude Code로 저장소를 다루는 과정을 단계별로 확인합니다.</p>
+  <p class="sub">Claude Code(휴대폰·PC)로 저장소를 다루는 과정을 단계별로 확인합니다.</p>
 
   <div class="progress"><div class="bar" id="bar"></div></div>
   <p class="count" id="count"></p>
@@ -61,7 +61,7 @@
 
   <button id="reset" type="button">체크 초기화</button>
 
-  <footer>체크 상태는 이 브라우저에만 저장됩니다. 마지막 업데이트: 2026-11-26</footer>
+  <footer>체크 상태는 이 브라우저에만 저장됩니다. 마지막 업데이트: 2026-11-27</footer>
 </main>
 <script>
   const steps = [
@@ -72,21 +72,23 @@
     ["main 브랜치 생성", "PR의 합칠 대상 만들기"],
     ["PR 생성과 Merge", "앱에서 Merge 버튼으로 main에 반영"],
     ["기본 브랜치 변경", "저장소 기본 브랜치를 main으로 지정"],
-    ["GitHub Pages 공개", "이 페이지가 인터넷 주소로 열림"]
+    ["GitHub Pages 공개", "이 페이지가 인터넷 주소로 열림"],
+    ["이슈 기반 작업", "이슈 등록 → PR → Merge 시 이슈 자동 종료"],
+    ["충돌 해결", "같은 줄을 양쪽에서 고쳐 충돌을 만들고 직접 해결"],
+    ["PC에서 작업", "Git·GitHub CLI 설치 후 PC에서 브랜치·커밋·PR"],
+    ["자동 검사 (GitHub Actions)", "PR마다 HTML 문법과 깨진 링크 검사, ✅/❌ 확인"]
   ];
   const goals = [
-    ["이슈 기반 작업", "이슈 등록 → PR → Merge 시 이슈 자동 종료"],
-    ["코드 리뷰와 충돌", "PR 리뷰 받기, 일부러 충돌 만들어 해결하기"],
-    ["자동 검사 (GitHub Actions)", "PR마다 HTML과 링크를 자동으로 검사"],
+    ["코드 리뷰", "PR을 리뷰 받고 지적 사항을 고쳐서 다시 푸시"],
     ["실제 프로젝트", "매일 쓰는 개인 웹 도구 하나 만들기"]
   ];
   const KEY = "gh-practice-checks";
   let saved = {};
   try { saved = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
-  // 첫 방문 시: 이미 완료한 7단계를 체크된 상태로 시작
-  if (!Object.keys(saved).length) steps.slice(0, 7).forEach((_, i) => saved[i] = true);
+  // 첫 방문 시: 지금까지 끝낸 단계(steps 전체)를 체크된 상태로 시작
+  if (!Object.keys(saved).length) steps.forEach((_, i) => saved[i] = true);
 
-  // 기존 체크 기록과 겹치지 않도록 다음 목표는 "g0", "g1"… 키를 사용
+  // 다음 목표는 "n0", "n1"… 키를 사용 (예전 목표 목록의 "g0"… 체크 기록과 섞이지 않게)
   function build(listId, items, prefix) {
     const list = document.getElementById(listId);
     items.forEach(([title, desc], i) => {
@@ -107,7 +109,7 @@
   }
 
   build("steps", steps, "");
-  build("goals", goals, "g");
+  build("goals", goals, "n");
   document.getElementById("reset").addEventListener("click", () => {
     saved = {}; document.querySelectorAll("li input").forEach(c => c.checked = false); render();
   });
