@@ -6,6 +6,7 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "collect": "node collect/index.mjs",
+    "validate": "node collect/validate.mjs",
     "test": "node --test collect/"
   }
 }
