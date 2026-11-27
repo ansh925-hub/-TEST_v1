@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: write # data/ 커밋과 푸시에 필요
+  pages: write # 봇 푸시 뒤 Pages 다시 배포 요청에 필요
 
 # 두 번 겹쳐 실행되면 나중 것이 앞의 것을 기다립니다 (동시에 푸시하다 충돌하지 않게)
 concurrency:
@@ -36,22 +37,42 @@ jobs:
           else echo "failed=true" >> "$GITHUB_OUTPUT"; fi
 
       - name: 바뀐 데이터 커밋
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/
-          if git diff --cached --quiet; then
-            echo "바뀐 데이터 없음"
+          # 수집 시각(generatedAt/updatedAt/failedAt)만 바뀐 경우는 커밋하지 않는다
+          if ! git diff --cached -U0 data/ | grep -E '^[+-] ' | grep -vqE '"(generatedAt|updatedAt|failedAt)"'; then
+            echo "값이 바뀐 데이터 없음 (시각만 바뀜)"
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          git commit -m "data: 자동 수집 $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M') KST"
-          # 그사이 main에 다른 커밋이 들어왔으면 그 위에 얹어서 푸시
-          git pull --rebase origin main
+          msg="data: 자동 수집 $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M') KST"
+          git commit -q -m "$msg"
+          # 그사이 main에 다른 커밋이 들어왔으면 그 위에 얹는다.
+          # data/가 충돌하면 최신 main에서 한 번 더 수집해서 다시 커밋한다 (이번 수집 결과를 잃지 않게).
+          if ! git pull --rebase origin main; then
+            echo "::warning::data/ 충돌 — 최신 main에서 다시 수집합니다"
+            git rebase --abort
+            git reset -q --hard origin/main
+            npm run collect || echo "failed=true" >> "$GITHUB_OUTPUT"
+            git add data/
+            git diff --cached --quiet || git commit -q -m "$msg"
+          fi
           git push origin HEAD:main
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+
+      # GITHUB_TOKEN으로 한 푸시는 다른 워크플로를 깨우지 않을 수 있어서, Pages 배포를 직접 요청한다.
+      - name: Pages 다시 배포 요청
+        if: steps.commit.outputs.pushed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" --silent || echo "::warning::Pages 배포 요청 실패"
 
       # 저장은 끝냈으니, 실패한 출처가 있었다면 여기서 실패로 표시합니다 (Actions에 ❌).
       - name: 실패한 출처 확인
-        if: steps.collect.outputs.failed == 'true'
+        if: steps.collect.outputs.failed == 'true' || steps.commit.outputs.failed == 'true'
         run: |
           echo "::error::실패한 출처가 있습니다. '수집' 단계 로그의 ❌ 줄을 확인하세요."
           exit 1
