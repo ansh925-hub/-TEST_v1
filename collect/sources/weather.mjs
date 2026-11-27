@@ -23,14 +23,20 @@ export async function collect() {
     "&current=temperature_2m,weather_code" +
     "&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max" +
     "&timezone=Asia%2FSeoul&forecast_days=1";
-  const d = await getJSON(url);
+  return parse(await getJSON(url));
+}
+
+/** API 응답 → 대시보드용 값 (네트워크 없이 테스트할 수 있게 분리) */
+export function parse(d) {
   const code = num(d.current?.weather_code, "weather_code");
+  const rain = d.daily?.precipitation_probability_max?.[0];
   return {
     city: CITY.name,
     temperature: num(d.current?.temperature_2m, "현재 기온"),
     condition: WMO[code] ?? `코드 ${code}`,
     max: num(d.daily?.temperature_2m_max?.[0], "최고 기온"),
     min: num(d.daily?.temperature_2m_min?.[0], "최저 기온"),
-    precipitationChance: num(d.daily?.precipitation_probability_max?.[0], "강수 확률"),
+    // 강수 확률은 가끔 비어서 오므로 없으면 null (핵심 값이 아니라 전체를 실패시키지 않음)
+    precipitationChance: typeof rain === "number" && Number.isFinite(rain) ? rain : null,
   };
 }

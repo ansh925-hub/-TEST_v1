@@ -12,7 +12,12 @@ const CURRENCIES = [
 
 export async function collect() {
   const symbols = ["KRW", ...CURRENCIES.map(c => c.code).filter(c => c !== "USD")].join(",");
-  const d = await getJSON(`https://api.frankfurter.dev/v1/latest?base=USD&symbols=${symbols}`);
+  return parse(await getJSON(`https://api.frankfurter.dev/v1/latest?base=USD&symbols=${symbols}`));
+}
+
+/** API 응답(USD 기준) → 통화별 원화 환산 값 (네트워크 없이 테스트할 수 있게 분리) */
+export function parse(d) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(d.date ?? "")) throw new Error(`기준일 형식이 이상함: ${d.date}`);
   const krwPerUsd = num(d.rates?.KRW, "USD→KRW");
   const rates = {};
   for (const { code, unit } of CURRENCIES) {

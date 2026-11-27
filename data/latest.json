@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-11-27T04:12:04.099Z",
+  "generatedAt": "2026-11-27T04:14:31.406Z",
   "date": "2026-11-27",
   "sources": {
     "weather": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:12:04.099Z",
+      "updatedAt": "2026-11-27T04:14:31.406Z",
       "data": {
         "city": "서울",
         "temperature": 14.4,
@@ -16,7 +16,7 @@
     },
     "air": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:12:04.099Z",
+      "updatedAt": "2026-11-27T04:14:31.406Z",
       "data": {
         "city": "서울",
         "pm10": 48.2,
@@ -27,7 +27,7 @@
     },
     "fx": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:12:04.099Z",
+      "updatedAt": "2026-11-27T04:14:31.406Z",
       "data": {
         "baseDate": "2026-11-26",
         "rates": {

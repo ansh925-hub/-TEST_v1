@@ -1,5 +1,6 @@
 // 수집 스크립트에서 같이 쓰는 도구 모음
-const UA = "TEST_v1-dashboard (GitHub Actions practice; +https://github.com/ansh925-hub/-TEST_v1)";
+// 외부 서비스에 계정·저장소 이름이 남지 않도록 일반적인 이름만 쓴다.
+const UA = "dashboard-collector/1.0";
 
 /** URL에서 JSON을 받아 온다. 20초 안에 응답이 없거나 200번대가 아니면 오류. */
 export async function getJSON(url) {
