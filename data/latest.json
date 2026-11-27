@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-27T04:35:56.941Z",
+  "generatedAt": "2026-11-27T04:49:23.701Z",
   "date": "2026-11-27",
   "sources": {
     "weather": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:35:56.941Z",
+      "updatedAt": "2026-11-27T04:49:23.701Z",
       "data": {
         "city": "서울",
-        "temperature": 14.8,
+        "temperature": 14.9,
         "condition": "대체로 맑음",
         "max": 15,
         "min": 6.1,
@@ -16,7 +16,7 @@
     },
     "air": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:35:56.941Z",
+      "updatedAt": "2026-11-27T04:49:23.701Z",
       "data": {
         "city": "서울",
         "pm10": 48.2,
@@ -27,7 +27,7 @@
     },
     "fx": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:35:56.941Z",
+      "updatedAt": "2026-11-27T04:49:23.701Z",
       "data": {
         "baseDate": "2026-11-26",
         "rates": {
@@ -52,7 +52,7 @@
     },
     "indicesUS": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:35:56.941Z",
+      "updatedAt": "2026-11-27T04:49:23.701Z",
       "data": {
         "items": [
           {
@@ -84,30 +84,30 @@
     },
     "indicesKR": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:35:56.941Z",
+      "updatedAt": "2026-11-27T04:49:23.701Z",
       "data": {
         "items": [
           {
             "code": "KOSPI",
             "name": "코스피",
-            "price": 4898.42,
+            "price": 4895.7,
             "previousClose": 4711.21,
-            "change": 187.21,
-            "changePct": 3.97,
+            "change": 184.49,
+            "changePct": 3.92,
             "date": "2026-11-27",
-            "asOf": "2026-11-27T04:15:40.000Z",
+            "asOf": "2026-11-27T04:29:20.000Z",
             "closed": false,
             "via": "Yahoo Finance"
           },
           {
             "code": "KOSDAQ",
             "name": "코스닥",
-            "price": 699.32,
+            "price": 699.63,
             "previousClose": 655.71,
-            "change": 43.61,
-            "changePct": 6.65,
+            "change": 43.92,
+            "changePct": 6.7,
             "date": "2026-11-27",
-            "asOf": "2026-11-27T04:15:50.000Z",
+            "asOf": "2026-11-27T04:29:20.000Z",
             "closed": false,
             "via": "Yahoo Finance"
           }
@@ -116,33 +116,33 @@
     },
     "newsDomestic": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:35:56.941Z",
+      "updatedAt": "2026-11-27T04:49:23.701Z",
       "data": {
         "items": [
           {
-            "title": "코스닥 장중 5% 급등‥'매수 사이드카' 발동",
-            "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE05VlE3MzJxZ0JTdUUtbW5ITXFzdERHc3NkQy1DR0pQSENGUGhGNU80cXlrSWZaVm5MZzdiaVk0Rk9tZ3V3bzZNMXk3dVlmZ2MxUFJzUU5ZVGQ2Tmp5MVRZZmU0RHVqdHRsNmpsclpSdTk4ajVQ0gF0QVVfeXFMUFh2bk13Q0FDU3FRdndkY2wxS2xaamZtanBzWF91alA4QWxybmV5cUEzSlQ0RkZ1aGRqWmg2UzBSSTJRQzdZb2ZLSl92cVIwTUhtWDF1WGRUNmlNeHlBTmtJaUpsVThPY0ZCS3ExczJ5MDNPZ1c?oc=5",
+            "title": "수능 부정행위 신고·제보 306건 접수‥교육부 \"확인 시 최소 1억 포상\"",
+            "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTFB5dURiNmJoTHFDMWdyZmlfYlljQzNWcVNObG1qOW41TmJRMXpFVUYyNVlmbkZ3dzBKdWhIVmg4U3dQNDU3UkxSN0VIcWJvdllXU2NYT2p3c2xERl9VaUhwTURhNm5COEVnXzcyWk1pTUdQWll6V2dN0gF3QVVfeXFMUHFWRlpvTUhXekZ5akFXY2NBQXA4V2t4d1pTb2NLYlhjWmNRRnhXMW5zNVNpWXJNNGpjM3g0dWNJeUFydmVRQmp2MWhVWlg4RUd3cXdMTnM4WHZ6S05WZ1ZjR0haSzF3RUwzUW84eHZYTHM2Z0tUemc?oc=5",
             "source": "MBC 뉴스",
-            "publishedAt": "2026-11-27T02:33:20.000Z"
-          },
-          {
-            "title": "최민희, 징계심의 전 김민석 조준 \"마타도어 방지책 마련해야\"",
-            "link": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5yaVFabms2bGcwX3RVZ2kyMktocUIwVlUyLU15cnhKOWJYMUw4czJEa3REMlhObmNPTWxUUXJrRzAyOUdvNG5WUER0by1XOVRDbmxmMUpzcGlJTXNkSXdiT3A4TWJHS2RzdV9UQ0Rzbnd3R2pHeDczYdIBeEFVX3lxTE5XNGJ2U2JtNEFRZU5DVmhnd1dVNkt1UU82aWx5ZzEyTjN4cWhabFlLWG9qZmwybGNZQjY2RHJURktlX2dySGMxSTI0aHdndXk3VFNYNXFGR0NMR1ViZ2pITEx5RTJoLWI4TzBZUlluWGM1TXFzRHlPZw?oc=5",
-            "source": "MBC 뉴스",
-            "publishedAt": "2026-11-27T02:29:23.000Z"
+            "publishedAt": "2026-11-27T02:32:34.000Z"
           },
           {
             "title": "뇌 MRI서 밝게 보이는 백질 병변, 넓을수록 기억력 점수 낮았다",
             "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE0xWUIxOEhFREVMV2ctYk5STkxZM0tNLTl5eTJzV1d1STRDTzFLOU9JdW1CQ09qOXlaa0d6amt5Mlh3OHRHOTVPNlNPaVZERzhCTk5Pb3lCaGhXWHlsZXFGR3pwWkcwX2liVFRUWlln?oc=5",
             "source": "간호사신문",
             "publishedAt": "2026-11-27T02:25:08.000Z"
+          },
+          {
+            "title": "경찰, ‘한동훈 자료 유출 의혹’ 법무부·공소청 등 압수수색",
+            "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE5kVTFoaGlkOFIwRlg5MjhuR2FoREhfU2x1M1EzbU9Ec2xwYmV0R0ZHQU5JRzlDYkphUVJZU1BnaUpqZkc3d05YZ2l1anMyaGpuZXNQNmh1LWtqRUExTElPOFhERVF1VE43Y001VlhMSFU3QQ?oc=5",
+            "source": "한겨레",
+            "publishedAt": "2026-11-27T02:24:00.000Z"
           }
         ]
       }
     },
     "newsWorld": {
       "ok": true,
-      "updatedAt": "2026-11-27T04:35:56.941Z",
+      "updatedAt": "2026-11-27T04:49:23.701Z",
       "data": {
         "items": [
           {
