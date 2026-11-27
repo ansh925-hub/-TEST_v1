@@ -39,4 +39,8 @@ Claude Code가 이 저장소에서 작업할 때 지키는 지침입니다. 진�
 - 새 세션은 다른 작업 브랜치에서 시작될 수 있으니 항상 브랜치부터 확인한다.
 
 ## 검사
-- 아직 자동 검사(CI)는 없다. 단계 3에서 GitHub Actions로 HTML 문법과 깨진 링크 검사를 추가할 예정이다. 추가되면 이 절에 실행 방법을 적는다.
+- `.github/workflows/check.yml`: PR과 `main` 푸시마다 GitHub Actions가 두 가지를 검사한다.
+  - **HTML 문법**: `htmlhint` (규칙은 `.htmlhintrc`)
+  - **깨진 링크**: `lychee`가 모든 `.html`, `.md` 파일의 링크를 열어 본다
+- PR은 두 검사가 모두 ✅일 때만 Merge를 권한다. ❌이면 `gh run view --log-failed`로 원인을 확인하고 고친다.
+- 이 PC에는 Node.js가 없어서 로컬에서 검사를 미리 돌릴 수 없다. 결과는 PR의 Actions에서 확인한다.

@@ -1,0 +1,39 @@
+# PR을 만들거나 main에 푸시할 때마다 HTML 문법과 깨진 링크를 자동으로 검사합니다.
+# 결과는 PR 화면에 ✅(통과) / ❌(실패)로 표시됩니다.
+name: 자동 검사
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  html:
+    name: HTML 문법 검사
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      # 규칙은 저장소의 .htmlhintrc에 있습니다.
+      - run: npx --yes htmlhint@1.1.4 "**/*.html"
+
+  links:
+    name: 깨진 링크 검사
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # HTML과 Markdown 파일의 모든 링크를 열어 봅니다.
+      # 429(요청이 너무 많음)는 사이트가 잠시 막은 것이라 실패로 치지 않습니다.
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --no-progress
+            --max-retries 3
+            --accept 200..=299,429
+            "./**/*.html" "./**/*.md"
+          fail: true
