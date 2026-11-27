@@ -14,9 +14,11 @@ export const KR = [
 ];
 
 /** 현재값·직전 종가로 변동폭과 등락률을 계산한다. */
-function withChange(price, previousClose) {
-  const change = price - previousClose;
-  return { price: round(price, 2), previousClose: round(previousClose, 2), change: round(change, 2), changePct: round((change / previousClose) * 100, 2) };
+function withChange(rawPrice, rawPrev) {
+  // 화면에 보이는 두 값의 차이와 변동폭이 정확히 같도록 먼저 반올림한 뒤 계산한다.
+  const price = round(rawPrice, 2), previousClose = round(rawPrev, 2);
+  const change = round(price - previousClose, 2);
+  return { price, previousClose, change, changePct: round((change / previousClose) * 100, 2) };
 }
 
 /** Yahoo 차트 응답 → 지수 값. 마지막 두 개의 종가로 변동을 계산한다. */
@@ -30,14 +32,19 @@ export function parseYahoo(j, now = new Date()) {
   const last = closes.at(-1), prev = closes.at(-2);
   const tz = r.meta?.exchangeTimezoneName ?? "UTC";
   const asOf = new Date(num(r.meta?.regularMarketTime ?? last.t, "기준 시각") * 1000);
-  const end = r.meta?.currentTradingPeriod?.regular?.end;
+  // 장중 = 지금이 정규장 시간 안이고, 마지막 값도 그 장에서 나온 것. 장 시작 전에는 regular가
+  // "오늘 열릴 장"을 가리키므로 시간만 보면 안 된다 (그때 값은 어제 종가).
+  const { start, end } = r.meta?.currentTradingPeriod?.regular ?? {};
+  const nowSec = now.getTime() / 1000;
+  const known = typeof start === "number" && typeof end === "number";
+  const open = known && nowSec >= start && nowSec < end && last.t >= start;
   return {
     ...withChange(last.c, prev.c),
     // 거래소 시간대 기준 거래일 (예: 미국 지수는 뉴욕 날짜)
     date: new Intl.DateTimeFormat("en-CA", { timeZone: tz }).format(new Date(last.t * 1000)),
     asOf: asOf.toISOString(),
     // 장이 끝났으면 종가, 아니면 장중 값
-    closed: typeof end === "number" ? now.getTime() / 1000 >= end : null,
+    closed: known ? !open : null,
     via: "Yahoo Finance",
   };
 }
@@ -80,10 +87,20 @@ export async function collectGroup(list) {
   return { items };
 }
 
-/** 날짜별 기록용: 성공한 지수만 {코드: 값} */
-export const toHistory = d => Object.fromEntries(d.items.filter(i => !i.error).map(i => [i.code, i.price]));
 /** 기록할 날짜: 성공한 지수 중 가장 늦은 거래일 */
 export const tradeDate = d => d.items.filter(i => !i.error).map(i => i.date).sort().at(-1);
+/**
+ * 날짜별 기록용 {코드: 값}. 차트에 "그날 종가"만 남도록
+ * - 장중 값(closed === false)은 넣지 않고
+ * - 기록 날짜(tradeDate)와 거래일이 다른 지수(예: FRED로 대체돼 하루 늦은 값)도 넣지 않는다.
+ */
+export const toHistory = d => {
+  const date = tradeDate(d);
+  const entries = d.items
+    .filter(i => !i.error && i.closed !== false && i.date === date)
+    .map(i => [i.code, i.price]);
+  return entries.length ? Object.fromEntries(entries) : null; // null이면 이번에는 기록하지 않음
+};
 
 export const us = { collect: () => collectGroup(US) };
 export const kr = { collect: () => collectGroup(KR) };

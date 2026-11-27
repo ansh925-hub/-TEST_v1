@@ -33,6 +33,23 @@ test("Yahoo: 장 마감 뒤에는 closed=true", () => {
   assert.equal(parseYahoo(YAHOO_KOSPI, new Date(1795761000 * 1000)).closed, true);
 });
 
+test("Yahoo: 장 시작 전(07:00)에는 어제 종가이므로 closed=true", () => {
+  const j = structuredClone(YAHOO_KOSPI);
+  j.chart.result[0].timestamp.pop(); // 오늘 값은 아직 없음
+  j.chart.result[0].indicators.quote[0].close.pop();
+  const sevenAm = new Date((1795737600 - 2 * 3600) * 1000); // 장 시작 2시간 전
+  const r = parseYahoo(j, sevenAm);
+  assert.equal(r.closed, true);
+  assert.equal(r.date, "2026-11-26");
+});
+
+test("변동폭은 화면에 보이는 두 값의 차이와 같다", () => {
+  const r = parseFred("d,v\n2026-11-24,100.004\n2026-11-25,100.015\n");
+  assert.equal(r.price, 100.02);
+  assert.equal(r.previousClose, 100);
+  assert.equal(r.change, 0.02);
+});
+
 test("Yahoo: 빈 값(null)은 건너뛰고, 결과가 없으면 오류", () => {
   const j = structuredClone(YAHOO_KOSPI);
   j.chart.result[0].indicators.quote[0].close[4] = null; // 오늘 값이 아직 없음
@@ -56,9 +73,19 @@ test("FRED: 휴장일('.')은 건너뛰고 마지막 두 값으로 계산", () =
 
 test("기록용 값과 날짜는 성공한 지수만 사용", () => {
   const d = { items: [
-    { code: "SPX", price: 6000, date: "2026-11-26" },
+    { code: "SPX", price: 6000, date: "2026-11-26", closed: true },
     { code: "NDX", error: "HTTP 429" },
   ] };
   assert.deepEqual(toHistory(d), { SPX: 6000 });
   assert.equal(tradeDate(d), "2026-11-26");
+});
+
+test("기록에는 그날 종가만: 장중 값과 날짜가 다른(하루 늦은) 값은 빼고, 없으면 null", () => {
+  const mixed = { items: [
+    { code: "SPX", price: 6000, date: "2026-11-26", closed: true },
+    { code: "NDX", price: 26000, date: "2026-11-25", closed: true, via: "FRED" },
+  ] };
+  assert.deepEqual(toHistory(mixed), { SPX: 6000 });
+  const intraday = { items: [{ code: "KOSPI", price: 4895, date: "2026-11-27", closed: false }] };
+  assert.equal(toHistory(intraday), null);
 });

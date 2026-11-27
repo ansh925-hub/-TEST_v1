@@ -81,9 +81,11 @@ export function mergeHistory(history, results, now = new Date(), sources = SOURC
   const byDate = new Map(history.map(h => [h.date, { ...h }]));
   for (const [name, r] of Object.entries(results)) {
     if (!r.ok || !sources[name].history) continue;
+    const value = sources[name].history(r.data);
+    if (value == null) continue; // 출처가 "이번에는 기록할 값 없음"이라고 한 경우 (예: 장중 지수)
     const date = sources[name].date?.(r.data) ?? todayKST(now);
     const entry = byDate.get(date) ?? { date };
-    entry[name] = sources[name].history(r.data);
+    entry[name] = value;
     byDate.set(date, entry);
   }
   return [...byDate.values()]
