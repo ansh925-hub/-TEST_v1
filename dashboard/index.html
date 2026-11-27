@@ -60,6 +60,7 @@
     <h1>오늘의 대시보드</h1>
     <span class="updated" id="updated">불러오는 중…</span>
   </header>
+  <div class="warn" id="stale" hidden></div>
   <div class="grid">
     <section class="card" id="weather"><h2>☀️ 날씨</h2></section>
     <section class="card" id="air"><h2>😷 미세먼지</h2></section>
@@ -197,7 +198,8 @@ const render = {
         put(card, el("div", { class: "row" }, name, el("span", { class: "val muted" }, "불러오지 못함"), null));
         continue;
       }
-      name.append(el("span", { class: "badge" }, i.closed === false ? "장중" : "종가"));
+      // 장 상태를 모르면(null) 배지를 달지 않는다
+      if (i.closed != null) name.append(el("span", { class: "badge" }, i.closed ? "종가" : "장중"));
       put(card, el("div", { class: "row" },
         name,
         el("span", { class: "val" }, el("b", {}, fmtNum(i.price)), changeSpan(i.change, i.changePct)),
@@ -225,16 +227,32 @@ async function getJSON(path) {
   return res.json();
 }
 
+const STALE_HOURS = 36; // 하루 2번 수집하므로 이보다 오래 안 바뀌면 수집이 멈췄을 가능성
+let lastLoad = 0;
+
 async function main() {
+  lastLoad = Date.now();
   const updated = document.getElementById("updated");
-  let latest, history;
+  const stale = document.getElementById("stale");
+  // 다시 불러올 때를 위해 카드 내용을 비운다 (제목 h2만 새로 만들어 남김)
+  for (const card of document.querySelectorAll(".card")) {
+    const title = card.querySelector("h2").firstChild.textContent;
+    card.replaceChildren(el("h2", {}, title));
+  }
+  let latest;
   try {
-    [latest, history] = await Promise.all([getJSON("../data/latest.json"), getJSON("../data/history.json")]);
+    latest = await getJSON("../data/latest.json");
   } catch (e) {
     updated.textContent = `데이터를 불러오지 못했습니다 (${e.message})`;
     return;
   }
-  updated.textContent = `마지막 수집 ${fmtTime(latest.generatedAt)} (${ago(latest.generatedAt)})`;
+  // 그래프용 기록은 없어도 카드는 보여 준다
+  const history = await getJSON("../data/history.json").catch(() => []);
+  // generatedAt = 값이 마지막으로 바뀐 시각 (값이 그대로면 봇이 커밋하지 않으므로 "수집 시각"과 다를 수 있음)
+  updated.textContent = `마지막 변경 ${fmtTime(latest.generatedAt)} (${ago(latest.generatedAt)})`;
+  const hours = (Date.now() - new Date(latest.generatedAt)) / 3600000;
+  stale.hidden = !(hours > STALE_HOURS);
+  stale.textContent = `${Math.floor(hours)}시간 넘게 데이터가 바뀌지 않았습니다. 자동 수집이 멈췄을 수 있으니 GitHub Actions의 "데이터 수집"을 확인하세요.`;
   const draw = {
     weather: render.weather, air: render.air, fx: render.fx,
     indicesUS: (c, d, h) => render.indices(c, d, h, "indicesUS"),
@@ -254,6 +272,10 @@ async function main() {
 }
 
 main();
+// 휴대폰에서 탭을 열어 둔 채 나중에 돌아오면(10분 이상 지남) 새 데이터로 다시 그린다
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && Date.now() - lastLoad > 10 * 60 * 1000) main();
+});
 </script>
 </body>
 </html>
