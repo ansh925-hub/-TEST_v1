@@ -1,0 +1,11 @@
+{
+  "name": "test-v1-dashboard",
+  "private": true,
+  "type": "module",
+  "description": "GitHub Actions로 매일 공개 데이터를 모아 Pages 대시보드로 보여 주는 실습 프로젝트",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "collect": "node collect/index.mjs",
+    "test": "node --test collect/"
+  }
+}
