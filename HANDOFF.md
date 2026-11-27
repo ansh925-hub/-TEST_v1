@@ -4,7 +4,7 @@
 
 ## 핵심 요약
 - **목표**: 휴대폰/PC의 Claude Code로 GitHub 클라우드 저장소를 다루는 방법을 실습하고, 마지막에는 매일 쓰는 개인 웹 도구를 만든다.
-- **완료**: 단계 0~2 중 충돌 실습까지 (커밋 → 푸시 → PR → Merge, Pages 공개, 이슈 자동 종료, 충돌 해결) + PC 폴더 연결 시험
+- **완료**: 단계 0~2 중 충돌 실습까지 (커밋 → 푸시 → PR → Merge, Pages 공개, 이슈 자동 종료, 충돌 해결) + PC 폴더 연결 시험 + 지침 파일(`CLAUDE.md`)과 스킬 등록
 - **다음**: ① 단계 3 GitHub Actions 자동 검사 (+ 코드 리뷰) → ② 단계 4 실제 프로젝트
 - **사이트**: https://ansh925-hub.github.io/-TEST_v1/ (main 기준 자동 배포)
 
@@ -21,7 +21,8 @@
 | 6 | 이슈 등록 → PR 본문에 `Closes #3` → Merge 시 이슈 자동 종료 | 이슈 #3, PR #4 |
 | 7 | 같은 줄을 양쪽에서 수정해 충돌을 만들고, 두 내용을 합치는 방식으로 해결 | PR #5 |
 | 8 | PC 폴더 연결 시험: PC 데스크톱 앱 세션에서 `D:\Claude\Git_test`에 `hello.txt` 생성 → 탐색기에서 확인 (사용자) | 로컬 파일 (저장소 밖) |
-| 9 | PC에 Git·GitHub CLI 설치 (사용자) → `gh auth login` → 저장소를 `D:\Claude\Git_test\-TEST_v1`로 clone → PC에서 브랜치·커밋·푸시·PR | 이 PR |
+| 9 | PC에 Git·GitHub CLI 설치 (사용자) → `gh auth login` → 저장소를 `D:\Claude\Git_test\-TEST_v1`로 clone → PC에서 브랜치·커밋·푸시·PR | PR #7 |
+| 10 | 지침 파일 작성, 자주 하는 작업을 스킬로 등록 (`/session-start`, `/make-pr`, `/after-merge`) | `CLAUDE.md`, `.claude/skills/` |
 
 ## 2. 하려던 것 / 남은 것
 | 우선순위 | 항목 | 상태 | 메모 |
@@ -38,11 +39,12 @@
 - **GitHub 안드로이드 앱**: PR 확인과 Merge는 편하지만, 파일 편집과 설정 변경은 웹(Chrome)에서 하는 것이 확실하다.
 - 새 세션은 **새 작업 브랜치**에서 시작할 수 있다. 시작하면 먼저 브랜치와 `main` 상태를 확인한다.
 - PC 폴더는 세션당 **1개 폴더, 1대 PC**만 연결할 수 있다. 데스크톱 앱이 켜져 있어야 한다.
+- **규칙은 `CLAUDE.md`, 진행 상황은 `HANDOFF.md`**에 적는다. 스킬은 저장소 폴더에서 연 세션에서만 목록에 보인다.
 - **PC 세션은 클라우드와 다르다**: 파일이 PC에 그대로 남고, `github.io`도 열 수 있다. 대신 Git·GitHub CLI를 직접 설치해야 한다 (이 PC는 winget이 없어서 설치 파일로 설치).
 - PC 작업 폴더: `D:\Claude\Git_test\-TEST_v1`. 커밋 작성자는 개인 이메일 대신 GitHub noreply 주소로 저장소에만 설정했다 (공개 저장소).
 
 ## 4. 새 세션 첫 메시지 (복사해서 사용)
 ```
-이 저장소의 HANDOFF.md를 읽고 현재 상태를 요약해줘.
+/session-start
 그다음 "남은 것" 1번(단계 3: GitHub Actions 자동 검사)부터 진행하자.
 ```
