@@ -1,9 +1,11 @@
 {
-  "generatedAt": "2026-11-27T22:52:20.264Z",
+  "generatedAt": "2026-11-28T08:18:08.616Z",
   "date": "2026-11-28",
   "sources": {
     "weather": {
-      "ok": true,
+      "ok": false,
+      "error": "fetch failed",
+      "failedAt": "2026-11-28T08:18:08.616Z",
       "updatedAt": "2026-11-27T22:52:20.264Z",
       "data": {
         "city": "서울",
@@ -16,18 +18,18 @@
     },
     "air": {
       "ok": true,
-      "updatedAt": "2026-11-27T22:52:20.264Z",
+      "updatedAt": "2026-11-28T08:18:08.616Z",
       "data": {
         "city": "서울",
-        "pm10": 39.6,
-        "pm10Grade": "보통",
-        "pm25": 31.3,
-        "pm25Grade": "보통"
+        "pm10": 8.5,
+        "pm10Grade": "좋음",
+        "pm25": 7.8,
+        "pm25Grade": "좋음"
       }
     },
     "fx": {
       "ok": true,
-      "updatedAt": "2026-11-27T22:52:20.264Z",
+      "updatedAt": "2026-11-28T08:18:08.616Z",
       "data": {
         "baseDate": "2026-11-27",
         "rates": {
@@ -52,7 +54,7 @@
     },
     "indicesUS": {
       "ok": true,
-      "updatedAt": "2026-11-27T22:52:20.264Z",
+      "updatedAt": "2026-11-28T08:18:08.616Z",
       "data": {
         "items": [
           {
@@ -63,7 +65,7 @@
             "change": 114.71,
             "changePct": 1.6,
             "date": "2026-11-27",
-            "asOf": "2026-11-27T18:38:39.000Z",
+            "asOf": "2026-11-27T21:00:00.000Z",
             "closed": true,
             "via": "Yahoo Finance"
           },
@@ -84,17 +86,17 @@
     },
     "indicesKR": {
       "ok": true,
-      "updatedAt": "2026-11-27T22:52:20.264Z",
+      "updatedAt": "2026-11-28T08:18:08.616Z",
       "data": {
         "items": [
           {
             "code": "KOSPI",
             "name": "코스피",
-            "price": 4711.21,
-            "previousClose": 4697.51,
-            "change": 13.7,
-            "changePct": 0.29,
-            "date": "2026-11-26",
+            "price": 4915.68,
+            "previousClose": 4711.21,
+            "change": 204.47,
+            "changePct": 4.34,
+            "date": "2026-11-27",
             "asOf": "2026-11-27T11:05:40.000Z",
             "closed": true,
             "via": "Yahoo Finance"
@@ -102,11 +104,11 @@
           {
             "code": "KOSDAQ",
             "name": "코스닥",
-            "price": 655.71,
-            "previousClose": 650.64,
-            "change": 5.07,
-            "changePct": 0.78,
-            "date": "2026-11-26",
+            "price": 708.99,
+            "previousClose": 655.71,
+            "change": 53.28,
+            "changePct": 8.13,
+            "date": "2026-11-27",
             "asOf": "2026-11-27T11:05:40.000Z",
             "closed": true,
             "via": "Yahoo Finance"
@@ -116,52 +118,52 @@
     },
     "newsDomestic": {
       "ok": true,
-      "updatedAt": "2026-11-27T22:52:20.264Z",
+      "updatedAt": "2026-11-28T08:18:08.616Z",
       "data": {
         "items": [
           {
-            "title": "DART 소행성 궤도 변경 실험의 충돌 흔적을 담은 첫 이미지",
-            "link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOdElxeElEeDRVcm8xVndvZi1OTUtxeEhpMnJNTzlMMi1rTEtLVzhXOEF0aUhTUFI5WVFtY1ZlZ20zNW16VEo0MlRGNHRVQllEYlJncVVHRzNMOU92Y3Z0SDJhTmpZOHRrcG5TSjBURVNuTTFVWXZjcHhwSnA0NkFQeERkU0JqS2tFaU56d1o4eEo3UQ?oc=5",
-            "source": "GeekNews",
-            "publishedAt": "2026-11-27T21:37:47.000Z"
+            "title": "대법원은 왜 12·3을 내란이라 쓰지 못했나",
+            "link": "https://news.google.com/rss/articles/CBMickFVX3lxTE1McmtpYThyZUdNWW9PaFNiTFlnRklEb20yMjZfVkJlMXpvcFRuV3hJcVpDSUt0NVJyLXBPcXQ2enBDckgzQlJOZEQ0Z2xJOFJBMUlLUjZiXzRxUWtDcWpXSHNHTTlZOTd6YUlCQTZYUzh0QQ?oc=5",
+            "source": "한겨레",
+            "publishedAt": "2026-11-28T07:56:00.000Z"
           },
           {
-            "title": "“젠슨 황 불륜 상대와 연계된 중국 데이터센터에 엔비디아 블랙웰 설치”",
-            "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5qU04wUGZ6S1N6TC1samtwbHgtSzB4Rm9TaW9zTFFvN2N0N21meVA0U3RqaHhRTjN3RzBHa3FEUzg5a1VWM0N2cXh0ZTV3TTdnZzVFc3RMdUZLUXM?oc=5",
-            "source": "KBS 뉴스",
-            "publishedAt": "2026-11-27T21:03:00.000Z"
+            "title": "트럼프 “서로 증오하는 푸틴-젤렌스키…종전 협상 최대 걸림돌”",
+            "link": "https://news.google.com/rss/articles/CBMib0FVX3lxTFA4dDZmOTJjZjN1emlMS05ubEdLalgyMllpWnFTQy0zM2s5QmlJSnJOSC1seXpYbVZybXpodWk1RkpUZ2psOUJCTlBobnNIdkNRa045VExncUhMNTZ2MnAxMlhELXU5OFhISDl4bVc3WQ?oc=5",
+            "source": "한겨레",
+            "publishedAt": "2026-11-28T07:56:00.000Z"
           },
           {
-            "title": "'명가 부활' 꿈꾸는 삼성화재, 1114일 만에 선두…V리그 판도 흔든다",
-            "link": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE4yNUlQZEh1TEw4clNBbUo2TU9FTFFpY1o1N2tQMkI2T042TEJ4OHFBdmJWZ29wb0o0dHdiUFZYaEp2SDhydjVqeHB6QmR5LThCcUJab1ppLXU4UQ?oc=5",
-            "source": "뉴스1",
-            "publishedAt": "2026-11-27T20:40:00.000Z"
+            "title": "검을 부러뜨리는 법",
+            "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5nb0JuODQ5bWI2OWxTNXBBTFJjR2E2aGw0M0VtMnc2MnJaN0twdWVaWGV1a3BxeEx3cWdaV0JWQm5ud3J4WDlWNmE3c3AxaFlwSFRr?oc=5",
+            "source": "브런치",
+            "publishedAt": "2026-11-28T07:52:04.000Z"
           }
         ]
       }
     },
     "newsWorld": {
       "ok": true,
-      "updatedAt": "2026-11-27T22:52:20.264Z",
+      "updatedAt": "2026-11-28T08:18:08.616Z",
       "data": {
         "items": [
           {
-            "title": "Prosecutors seek 25-year prison term for 'poison seller' Kenneth Law",
-            "link": "https://www.bbc.co.uk/news/articles/cmx2898wq2qjo?at_medium=RSS&at_campaign=rss",
+            "title": "Eight killed in Peruvian military helicopter crash",
+            "link": "https://www.bbc.co.uk/news/articles/cwp9d85mlp88o?at_medium=RSS&at_campaign=rss",
             "source": "BBC News",
-            "publishedAt": "2026-11-27T22:03:46.000Z"
+            "publishedAt": "2026-11-28T04:19:16.000Z"
           },
           {
-            "title": "Spanish PM and rivals rally supporters in final pitch for votes",
-            "link": "https://www.bbc.co.uk/news/articles/c8wy5p4gdnwvo?at_medium=RSS&at_campaign=rss",
+            "title": "Turkish officials 'destroyed' pro-opposition TV channel, owner tells BBC",
+            "link": "https://www.bbc.co.uk/news/articles/cq36gk151xkdo?at_medium=RSS&at_campaign=rss",
             "source": "BBC News",
-            "publishedAt": "2026-11-27T21:55:53.000Z"
+            "publishedAt": "2026-11-28T04:13:45.000Z"
           },
           {
-            "title": "Capsized tanker carrying 7,000 tonnes of diesel to be towed away from Ibiza",
-            "link": "https://www.bbc.co.uk/news/articles/cvrlgz6g0ekgo?at_medium=RSS&at_campaign=rss",
+            "title": "Nigeria's 'ultimate hard man' who become an online meme",
+            "link": "https://www.bbc.co.uk/news/articles/cm3vg3lkrk03o?at_medium=RSS&at_campaign=rss",
             "source": "BBC News",
-            "publishedAt": "2026-11-27T20:34:45.000Z"
+            "publishedAt": "2026-11-28T01:20:35.000Z"
           }
         ]
       }
